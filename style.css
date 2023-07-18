@@ -28,23 +28,23 @@ body {
 }
 
 .name {
-  font-size: 10.778vw;
+  font-size: 8vw;
   line-height: 100%;
 }
 
 .job {
-  font-size: 6.778vw;
+  font-size: 4vw;
   line-height: 100%;
 }
 
 .block {
-  margin-top: 10.333vw;
+  margin-top: 6vw;
 }
 
 .block-title {
   color: rgba(240, 240, 240, 0.6);
   line-height: 5.208vw;
-  font-size: 4.444vw;
+  font-size: 4vw;
   margin-bottom: 3.333vw;
 }
 
