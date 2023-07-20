@@ -9,7 +9,70 @@
   <meta name="autor" content="Дмитрий Силин" />
   <meta name="keywords" content="Дмитрий Силин, silinlicious, QA-engineer" />
   <title>Дмитрий Силин</title>
+  <style>
+        /* Общие стили, применяющиеся для всех устройств */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            color: #eee;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+        }
+        p {
+            text-align: center;
+        }
+        .contact-button {
+            display: block;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background-color: #555;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .contact-button:hover {
+            background-color: #777;
+        }
 
+        /* Медиа-запросы для адаптации на разные устройства */
+
+        /* Для устройств с шириной экрана до 768 пикселей (мобильные устройства и планшеты) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        /* Для устройств с шириной экрана от 768 до 1200 пикселей (небольшие десктопы и планшеты) */
+        @media (min-width: 768px) and (max-width: 1200px) {
+            .container {
+                max-width: 90%;
+            }
+        }
+
+        /* Для устройств с шириной экрана более 1200 пикселей (большие десктопы) */
+        @media (min-width: 1200px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+    </style>
 
   <link rel="stylesheet" href="./assets/css/main.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
