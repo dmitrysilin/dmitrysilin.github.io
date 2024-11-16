@@ -102,61 +102,31 @@
                 max-width: 1200px;
             }
         }
-	  .header-icons {
-  display: flex;
-  gap: 15px;
-}
-
-.icon-link {
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-}
-
-.tooltip {
-  visibility: hidden;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 5px;
-  border-radius: 5px;
-  position: absolute;
-  bottom: 100%; /* Позиционирование над иконкой */
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.icon-link:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
-}
 </style>
 </head>
 
 <body>
   <div id="particles-js">
-<div class="header-icons">
-  <a aria-label="Telegram" target="_blank" href="https://t.me/iloveQA" class="icon-link">
-    <i class="icon fa fa-telegram" aria-hidden="true"></i>
-    <span class="tooltip">Telegram</span>
-  </a>
-  <a aria-label="Email" href="mailto:qa.silin@ya.ru" target="_blank" class="icon-link">
-    <i class="icon fa fa-envelope" aria-hidden="true"></i>
-    <span class="tooltip">Email</span>
-  </a>
-  <a aria-label="Learn" target="_blank" href="https://buildin.ai/share/b4cacf71-167d-4c00-8574-f0e3d83c5d08" class="icon-link">
-    <i class="icon fa fa-graduation-cap" aria-hidden="true"></i>
-    <span class="tooltip">Learn</span>
-  </a>
-  <a aria-label="Wishlist" target="_blank" href="https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b" class="icon-link">
-    <i class="icon fa fa-gift" aria-hidden="true"></i>
-    <span class="tooltip">Wishlist</span>
-  </a>
-</div>
+    <div class="header">
+      <h1>
+        <span class="site-title">Дмитрий Силин</span>
+        <span class="site-description">QA-engineer</span>
+      </h1>
+      <div class="header-icons">
+        <a aria-label="Telegram" target="_blank" href="https://t.me/iloveQA">
+          <i class="icon fa fa-telegram" aria-hidden="true"></i>
+        </a>
+        <a aria-label="Email" href="mailto:qa.silin@ya.ru" target="_blank"><i
+            class="icon fa fa-envelope" aria-hidden="true"></i>
+	</a>
+	<a aria-label="Learn" target="_blank" href="https://buildin.ai/share/b4cacf71-167d-4c00-8574-f0e3d83c5d08">
+          <i class="icon fa fa-graduation-cap" aria-hidden="true"></i>
+        </a>
+	<a aria-label="Wishlist" target="_blank" href="https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b">
+          <i class="icon fa fa-gift" aria-hidden="true"></i>
+        </a>
+	
+      </div>
     </div>
     <a class="down" href="#about" data-scroll><i class="icon fa fa-chevron-down" aria-hidden="true"></i></a>
   </div>
