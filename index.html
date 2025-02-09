@@ -1,181 +1,238 @@
- <!--
+<!--
 ██╗  ██╗███████╗██╗     ██╗      ██████╗     ██╗    ██╗ ██████╗ ██████╗ ██╗     ██████╗
 ██║  ██║██╔════╝██║     ██║     ██╔═══██╗    ██║    ██║██╔═══██╗██╔══██╗██║     ██╔══██╗
 ███████║█████╗  ██║     ██║     ██║   ██║    ██║ █╗ ██║██║   ██║██████╔╝██║     ██║  ██║
 ██╔══██║██╔══╝  ██║     ██║     ██║   ██║    ██║███╗██║██║   ██║██╔══██╗██║     ██║  ██║
 ██║  ██║███████╗███████╗███████╗╚██████╔╝    ╚███╔███╔╝╚██████╔╝██║  ██║███████╗██████╔╝
 ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝ ╚═════╝      ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═════╝
- -->
+-->
 <!DOCTYPE html>
 <html lang="ru">
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="keywords" content="Дмитрий Силин, iloveQA, QA-engineer" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="keywords" content="QA, тестирование, ручное тестирование, Дмитрий Силин, iloveQA, QA-engineer, тестировщик">
   <title>QA Дмитрий Силин</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="./assets/css/main.css" />
+  
+  <!-- Стили -->
+  <link rel="stylesheet" href="./assets/css/main.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script src="./assets/js/sweet-scroll.min.js"></script>
-  <script src="./assets/js/google-analytics.js"></script>
-  <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/typed.js"></script>
-  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-
-  <!-- Yandex.Metrika counter -->
-  <script type="text/javascript">
-    (function(m, e, t, r, i, k, a) {
-      m[i] = m[i] || function() {
-        (m[i].a = m[i].a || []).push(arguments)
-      };
-      m[i].l = 1 * new Date();
-      for (var j = 0; j < document.scripts.length; j++) {
-        if (document.scripts[j].src === r) {
-          return;
-        }
-      }
-      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
-    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-
-    ym(97763500, "init", {
-      clickmap: true,
-      trackLinks: true,
-      accurateTrackBounce: true,
-      webvisor: true
-    });
-  </script>
-  <noscript>
-    <div><img src="https://mc.yandex.ru/watch/97763500" style="position:absolute; left:-9999px;" alt="" /></div>
-  </noscript>
-  <!-- /Yandex.Metrika counter -->
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  
   <style>
+    :root {
+      --primary-color: #00ff88;
+      --text-color: #eee;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', Arial, sans-serif;
       line-height: 1.6;
       margin: 0;
-      padding: 0;
       background-color: #000;
-      color: #eee;
+      color: var(--text-color);
     }
 
-    header {
-      background-color: #000;
-      color: #fff;
+    .header {
       text-align: center;
-      padding: 1rem;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    h1 {
-      color: #fff;
-      text-align: center;
-    }
-
-    p {
-      text-align: center;
-    }
-
-    .contact-button {
-      display: block;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      background-color: #000;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .contact-button:hover {
-      background-color: #000;
+      padding: 4rem 1rem;
+      position: relative;
+      z-index: 1;
     }
 
     #about {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      position: relative;
+      z-index: 1;
     }
 
-    .user-details {
+    #about .container {
       max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
       text-align: left;
+    }
+
+    #about h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 2rem;
+    }
+
+    #about h2 {
+      color: var(--primary-color);
+      margin: 2rem 0 1rem;
+    }
+
+    #about ul {
+      padding-left: 1.5rem;
+    }
+
+    #about li {
+      margin-bottom: 0.5rem;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .tool-item {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .tool-item:hover {
+      transform: translateY(-5px);
     }
 
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
       }
-    }
-
-    @media (min-width: 768px) and (max-width: 1200px) {
-      .container {
-        max-width: 90%;
+      
+      .header {
+        padding: 2rem 1rem;
       }
-    }
-
-    @media (min-width: 1200px) {
-      .container {
-        max-width: 1200px;
+      
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
 </head>
 
 <body>
-  <div id="particles-js">
-    <div class="header">
-      <h1>
-        <span class="site-title">Дмитрий Силин</span>
-        <span class="site-description">QA-engineer</span>
-      </h1>
-      <div class="header-icons">
-        <a aria-label="Telegram" target="_blank" href="https://t.me/iloveQA">
-          <i class="icon fa fa-telegram" aria-hidden="true"></i>
-        </a>
-        <a aria-label="Email" href="mailto:qa.silin@ya.ru" target="_blank">
-          <i class="icon fa fa-envelope" aria-hidden="true"></i>
-        </a>
-        <a aria-label="Learn" target="_blank"
-          href="https://buildin.ai/share/b4cacf71-167d-4c00-8574-f0e3d83c5d08">
-          <i class="icon fa fa-graduation-cap" aria-hidden="true"></i>
-        </a>
-        <a aria-label="Wishlist" target="_blank"
-          href="https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b">
-          <i class="icon fa fa-gift" aria-hidden="true"></i>
-        </a>
-      </div>
-    </div>
-    <a class="down" href="#about" data-scroll><i class="icon fa fa-chevron-down" aria-hidden="true"></i></a>
-  </div>
+  <div id="particles-js"></div>
 
-  <section id="about">
-    <div class="user-details">
-      <h1>Обо мне</h1>
-      <p>Привет! Я из Ижевска, занимаюсь ручным тестированием.</p>
-      <p><i class="fa fa-bug" aria-hidden="true"></i></p>
-      <p>Основные инструменты, которые использую в работе:</p>
-      <p>DevTools, Postman, DBeaver, Kafka AKHQ, Graylog, PL/SQL Developer, MobaXterm, Swagger, Kibana, Charles, Fiddler, Ключ-астром</p>
-      <p>Опыт работы с веб-приложениями, REST и gRPC API, SOAP, CRM-системой Siebel и базами данных Oracle, PostgreSQL</p>
+  <header class="header">
+    <h1>
+      <span class="site-title">Дмитрий Силин</span>
+      <span class="site-description">QA-engineer</span>
+    </h1>
+    
+    <div class="header-icons">
+      <a aria-label="Telegram" target="_blank" rel="noopener noreferrer" href="https://t.me/iloveQA">
+        <i class="fa fa-telegram fa-2x"></i>
+      </a>
+      <a aria-label="Email" href="mailto:qa.silin@ya.ru" target="_blank" rel="noopener noreferrer">
+        <i class="fa fa-envelope fa-2x"></i>
+      </a>
+      <a aria-label="Learn" target="_blank" rel="noopener noreferrer" href="https://buildin.ai/share/b4cacf71-167d-4c00-8574-f0e3d83c5d08">
+        <i class="fa fa-graduation-cap fa-2x"></i>
+      </a>
+      <a aria-label="Wishlist" target="_blank" rel="noopener noreferrer" href="https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b">
+        <i class="fa fa-gift fa-2x"></i>
+      </a>
     </div>
-  </section>
+    
+    <a class="down" href="#about" data-scroll aria-label="Перейти к разделу">
+      <i class="fa fa-chevron-down fa-2x"></i>
+    </a>
+  </header>
+
+  <main>
+    <section id="about">
+      <div class="container">
+        <div class="user-details">
+          <h1>Обо мне</h1>
+          
+          <p>Привет! Я QA-инженер из Ижевска с 3-летним опытом в тестировании сложных веб-приложений и микросервисных архитектур.</p>
+
+          <h2>Технологический стек</h2>
+          <div class="tools-grid">
+            <div class="tool-item">
+              <i class="fa fa-bug fa-3x"></i>
+              <h3>Ручное тестирование</h3>
+            </div>
+            <div class="tool-item">
+              <i class="devicon-postgresql-plain fa-3x"></i>
+              <h3>Базы данных</h3>
+            </div>
+            <div class="tool-item">
+              <i class="fa fa-code fa-3x"></i>
+              <h3>API Testing</h3>
+            </div>
+          </div>
+
+          <h2>Основные инструменты</h2>
+          <ul>
+            <li>DevTools - анализ клиент-серверного взаимодействия</li>
+            <li>Postman - тестирование REST API</li>
+            <li>DBeaver - работа с SQL-базами данных</li>
+            <li>Kafka AKHQ - мониторинг message broker</li>
+            <li>Graylog - анализ логов системы</li>
+            <li>Charles Proxy - анализ и модификация трафика</li>
+          </ul>
+
+          <h2>Опыт работы</h2>
+          <p>Основные направления:</p>
+          <ul>
+            <li>Тестирование веб-приложений и мобильных клиентов</li>
+            <li>Работа с REST/gRPC API</li>
+            <li>Интеграционное тестирование микросервисов</li>
+            <li>Нагрузочное тестирование с помощью JMeter</li>
+            <li>Работа с CRM Siebel и Oracle DB</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer class="footer">
-    <div class="footer-icons">
+    <div class="container">
+      <p>&copy; 2024 Дмитрий Силин. Все права защищены</p>
     </div>
   </footer>
-</body>
 
+  <!-- Скрипты -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80 },
+        color: { value: '#00ff88' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: 'none',
+          random: false,
+          straight: false,
+          out_mode: 'out',
+          bounce: false
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'repulse' },
+          onclick: { enable: true, mode: 'push' },
+          resize: true
+        }
+      },
+      retina_detect: true
+    });
+  </script>
+  <script src="./assets/js/sweet-scroll.min.js"></script>
+  <script src="./assets/js/main.js"></script>
+
+  <!-- Yandex.Metrika -->
+  <script>
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+    ym(97763500, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/97763500" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+</body>
 </html>
