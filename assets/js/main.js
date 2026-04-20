@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetchError: "Не удалось получить /api/about_me.json"
             },
             easter: {
-                title: "QA-режим",
+                title: "Пасхалка",
                 status: "статус",
                 language: "язык",
                 endpoint: "эндпоинт",
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 wish: "пожелание",
                 hint: "подсказка",
                 ready: "готов",
-                hintValue: "введите qa, Esc чтобы закрыть",
+                hintValue: "esc чтобы закрыть",
                 messages: [
                     "Пусть сегодня всё складывается спокойно.",
                     "У вас очень хороший инженерный взгляд.",
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 fetchError: "Unable to fetch /api/about_me.json"
             },
             easter: {
-                title: "QA mode",
+                title: "easter egg",
                 status: "status",
                 language: "language",
                 endpoint: "endpoint",
@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 wish: "wish",
                 hint: "hint",
                 ready: "ready",
-                hintValue: "type qa, press Esc to close",
+                hintValue: "press esc to close",
                 messages: [
                     "May today unfold calmly for you.",
                     "You have a strong engineering eye.",
