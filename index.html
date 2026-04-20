@@ -23,6 +23,7 @@
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="./assets/css/main.css" />
+  <script src="./assets/js/main.js" defer></script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -88,6 +89,19 @@
         REST, gRPC, GraphQL, SOAP, Kafka, Redis, Oracle, PostgreSQL, Mockingbird, Postman, Insomnia, Swagger, SoapUI, DevTools,
         DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.
       </p>
+
+      <section class="api-block" aria-labelledby="api-title">
+        <div class="api-head">
+          <p class="api-label" id="api-title">GET /api/about_me.json</p>
+          <div class="api-actions">
+            <button class="api-button" type="button" data-copy-curl>Copy</button>
+            <button class="api-button" type="button" data-run-api>Run</button>
+          </div>
+        </div>
+
+        <code class="api-command">curl https://iloveqa.ru/api/about_me.json</code>
+        <pre class="api-response" data-api-response hidden aria-live="polite"></pre>
+      </section>
     </div>
   </main>
 </body>
