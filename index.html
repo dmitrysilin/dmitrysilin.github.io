@@ -4,17 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description"
-    content="Дмитрий Силин | QA engineer" />
+  <meta name="description" content="Дмитрий Силин | QA-инженер" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ru_RU" />
   <meta property="og:site_name" content="Дмитрий Силин" />
-  <meta property="og:title" content="Дмитрий Силин — QA engineer" />
-  <meta property="og:description" content="Дмитрий Силин | QA engineer" />
+  <meta property="og:title" content="Дмитрий Силин — QA-инженер" />
+  <meta property="og:description" content="Дмитрий Силин | QA-инженер" />
   <meta property="og:url" content="https://iloveqa.ru/" />
   <meta name="twitter:card" content="summary_large_image" />
-  <title>Дмитрий Силин | QA engineer</title>
+  <title>Дмитрий Силин | QA-инженер</title>
   <link rel="canonical" href="https://iloveqa.ru/" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,14 +21,14 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/css/main.css?v=20260420-2" />
-  <script src="./assets/js/main.js?v=20260420-2" defer></script>
-  <script type="application/ld+json">
+  <link rel="stylesheet" href="./assets/css/main.css?v=20260420-5" />
+  <script src="./assets/js/main.js?v=20260420-5" defer></script>
+  <script id="structured-data" type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Дмитрий Силин",
-      "jobTitle": "QA Engineer",
+      "jobTitle": "QA-инженер",
       "url": "https://iloveqa.ru/",
       "address": {
         "@type": "PostalAddress",
@@ -75,30 +74,37 @@
 <body>
   <main class="page" aria-label="Личный сайт Дмитрия Силина">
     <div class="page-inner">
-      <h1>Дмитрий Силин</h1>
-      <p class="role">QA engineer</p>
-
-      <div class="links" aria-label="Контакты">
-        <a href="https://t.me/iloveQA" target="_blank" rel="noopener noreferrer">Telegram</a>
-        <a href="mailto:qa.silin@ya.ru">Email</a>
-        <a href="https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b"
-          target="_blank" rel="noopener noreferrer">Wishlist</a>
+      <div class="lang-switch" role="group" aria-label="Language switcher">
+        <button class="lang-button is-active" type="button" data-lang-switch="ru" aria-pressed="true">RU</button>
+        <span class="lang-divider" aria-hidden="true">|</span>
+        <button class="lang-button" type="button" data-lang-switch="en" aria-pressed="false">ENG</button>
       </div>
 
-      <p class="stack">
+      <h1 data-i18n="name">Дмитрий Силин</h1>
+      <p class="role" data-i18n="role">QA-инженер</p>
+
+      <div class="links" aria-label="Ссылки и действия">
+        <a href="https://t.me/iloveQA" target="_blank" rel="noopener noreferrer" data-i18n="telegram">Телеграм</a>
+        <a href="mailto:qa.silin@ya.ru" data-i18n="email">Почта</a>
+        <a href="https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b"
+          target="_blank" rel="noopener noreferrer" data-i18n="wishlist">Вишлист</a>
+        <button class="link-button" type="button" data-share-page>Поделиться</button>
+      </div>
+
+      <p class="stack" data-i18n="stack">
         REST, gRPC, GraphQL, SOAP, Kafka, Redis, Oracle, PostgreSQL, Mockingbird, Postman, Insomnia, Swagger, SoapUI, DevTools,
         DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.
       </p>
 
       <section class="api-block" aria-labelledby="api-title" data-api-block>
         <div class="api-head">
-          <p class="api-label" id="api-title">GET /api/about_me.json</p>
+          <p class="api-label" id="api-title" data-i18n="api_label">GET /api/about_me.json</p>
           <div class="api-actions">
-            <button class="api-button" type="button" data-copy-curl>Copy</button>
+            <button class="api-button" type="button" data-copy-curl>Копировать</button>
             <button class="api-button" type="button" data-toggle-api aria-expanded="false" aria-controls="api-panel">
-              Expand
+              Раскрыть
             </button>
-            <button class="api-button" type="button" data-run-api hidden>Run</button>
+            <button class="api-button" type="button" data-run-api hidden>Запустить</button>
           </div>
         </div>
 
@@ -107,8 +113,43 @@
           <pre class="api-response" data-api-response hidden aria-live="polite"></pre>
         </div>
       </section>
+
+      <section class="api-block projects-block" aria-labelledby="projects-title" data-projects-block>
+        <div class="api-head">
+          <p class="api-label" id="projects-title" data-i18n="projects_label">Проекты</p>
+          <div class="api-actions">
+            <button class="api-button" type="button" data-toggle-projects aria-expanded="false" aria-controls="projects-panel">
+              Раскрыть
+            </button>
+          </div>
+        </div>
+
+        <div class="api-panel" id="projects-panel" data-projects-panel hidden>
+          <ul class="projects-list">
+            <li>
+              <a class="project-link" href="https://t.me/potracheno_fin_bot" target="_blank" rel="noopener noreferrer"
+                data-i18n="project_one">
+                Бот "Потрачено"
+              </a>
+            </li>
+            <li>
+              <a class="project-link" href="https://t.me/kinopoisk_search_bot" target="_blank" rel="noopener noreferrer"
+                data-i18n="project_two">
+                Бот "Что посмотреть"
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <p class="last-updated" data-i18n="last_updated">Обновлено 2026-04-20</p>
     </div>
   </main>
+
+  <aside class="qa-easter" data-qa-panel hidden aria-live="polite">
+    <p class="qa-easter-title" data-qa-title>QA-режим</p>
+    <pre class="qa-easter-body" data-qa-body></pre>
+  </aside>
 </body>
 
 </html>
