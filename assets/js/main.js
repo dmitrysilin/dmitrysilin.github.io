@@ -1,9 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
+    var apiBlock = document.querySelector("[data-api-block]");
     var copyButton = document.querySelector("[data-copy-curl]");
+    var toggleButton = document.querySelector("[data-toggle-api]");
     var runButton = document.querySelector("[data-run-api]");
+    var panel = document.querySelector("[data-api-panel]");
     var response = document.querySelector("[data-api-response]");
     var command = "curl https://iloveqa.ru/api/about_me.json";
     var endpoint = "./api/about_me.json";
+    var isExpanded = false;
+
+    function syncApiState() {
+        if (!apiBlock || !toggleButton || !runButton || !panel) {
+            return;
+        }
+
+        apiBlock.dataset.expanded = isExpanded ? "true" : "false";
+        toggleButton.textContent = isExpanded ? "Hide" : "Expand";
+        toggleButton.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+        runButton.hidden = !isExpanded;
+        panel.hidden = !isExpanded;
+    }
+
+    syncApiState();
 
     if (copyButton) {
         copyButton.addEventListener("click", async function () {
@@ -19,6 +37,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     copyButton.textContent = "Copy";
                 }, 1200);
             }
+        });
+    }
+
+    if (toggleButton) {
+        toggleButton.addEventListener("click", function () {
+            isExpanded = !isExpanded;
+            syncApiState();
         });
     }
 
@@ -41,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 var data = await result.json();
                 response.hidden = false;
                 response.textContent = JSON.stringify(data, null, 2);
-                runButton.textContent = "Loaded";
             } catch (error) {
                 response.hidden = false;
                 response.textContent = JSON.stringify(
@@ -51,9 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     null,
                     2
                 );
-                runButton.textContent = "Retry";
             } finally {
                 runButton.disabled = false;
+                runButton.textContent = "Run";
             }
         });
     }

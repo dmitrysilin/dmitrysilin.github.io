@@ -128,21 +128,42 @@ h1 {
 
 .api-actions {
     display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
 .api-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
     padding: 0;
     border: 0;
-    background: none;
+    border-radius: 0;
+    background: transparent;
     color: var(--muted);
-    font: inherit;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
     cursor: pointer;
 }
 
 .api-button:hover,
 .api-button:focus-visible {
     color: var(--text);
+}
+
+.api-button[hidden] {
+    display: none;
+}
+
+.api-panel[hidden] {
+    display: none;
 }
 
 .api-command,
@@ -196,6 +217,10 @@ h1 {
     .api-head {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .api-actions {
+        gap: 8px 14px;
     }
 }
 

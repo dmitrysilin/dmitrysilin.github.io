@@ -22,8 +22,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/css/main.css" />
-  <script src="./assets/js/main.js" defer></script>
+  <link rel="stylesheet" href="./assets/css/main.css?v=20260420-2" />
+  <script src="./assets/js/main.js?v=20260420-2" defer></script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -90,17 +90,22 @@
         DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.
       </p>
 
-      <section class="api-block" aria-labelledby="api-title">
+      <section class="api-block" aria-labelledby="api-title" data-api-block>
         <div class="api-head">
           <p class="api-label" id="api-title">GET /api/about_me.json</p>
           <div class="api-actions">
             <button class="api-button" type="button" data-copy-curl>Copy</button>
-            <button class="api-button" type="button" data-run-api>Run</button>
+            <button class="api-button" type="button" data-toggle-api aria-expanded="false" aria-controls="api-panel">
+              Expand
+            </button>
+            <button class="api-button" type="button" data-run-api hidden>Run</button>
           </div>
         </div>
 
-        <code class="api-command">curl https://iloveqa.ru/api/about_me.json</code>
-        <pre class="api-response" data-api-response hidden aria-live="polite"></pre>
+        <div class="api-panel" id="api-panel" data-api-panel hidden>
+          <code class="api-command">curl https://iloveqa.ru/api/about_me.json</code>
+          <pre class="api-response" data-api-response hidden aria-live="polite"></pre>
+        </div>
       </section>
     </div>
   </main>
