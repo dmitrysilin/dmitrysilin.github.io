@@ -382,7 +382,8 @@ document.addEventListener("DOMContentLoaded", function () {
         var label = nextTheme === "light" ? themeText.light : themeText.dark;
 
         themeToggle.setAttribute("aria-label", label);
-        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("data-tooltip", label);
+        themeToggle.removeAttribute("title");
         themeToggle.setAttribute("aria-pressed", currentTheme === "light" ? "true" : "false");
     }
 
@@ -395,7 +396,8 @@ document.addEventListener("DOMContentLoaded", function () {
         var label = currentAccessibility === "on" ? accessibilityText.off : accessibilityText.on;
 
         accessibilityToggle.setAttribute("aria-label", label);
-        accessibilityToggle.setAttribute("title", label);
+        accessibilityToggle.setAttribute("data-tooltip", label);
+        accessibilityToggle.removeAttribute("title");
         accessibilityToggle.setAttribute("aria-pressed", currentAccessibility === "on" ? "true" : "false");
     }
 
