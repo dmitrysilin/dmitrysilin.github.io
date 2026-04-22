@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var themeMedia = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
     var contrastMedia = window.matchMedia ? window.matchMedia("(prefers-contrast: more)") : null;
     var forcedColorsMedia = window.matchMedia ? window.matchMedia("(forced-colors: active)") : null;
+    var touchLikeMedia = window.matchMedia ? window.matchMedia("(hover: none), (pointer: coarse)") : null;
     var command = "curl " + API_URL;
     var currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
     var currentAccessibility = document.documentElement.getAttribute("data-accessibility") || "off";
@@ -370,6 +371,16 @@ document.addEventListener("DOMContentLoaded", function () {
             button.classList.toggle("is-active", isActive);
             button.setAttribute("aria-pressed", isActive ? "true" : "false");
         });
+    }
+
+    function blurAfterTap(element) {
+        if (!element || !touchLikeMedia || !touchLikeMedia.matches || typeof element.blur !== "function") {
+            return;
+        }
+
+        window.setTimeout(function () {
+            element.blur();
+        }, 0);
     }
 
     function updateThemeToggle() {
@@ -731,12 +742,14 @@ document.addEventListener("DOMContentLoaded", function () {
     if (themeToggle) {
         themeToggle.addEventListener("click", function () {
             applyTheme(currentTheme === "dark" ? "light" : "dark", true);
+            blurAfterTap(themeToggle);
         });
     }
 
     if (accessibilityToggle) {
         accessibilityToggle.addEventListener("click", function () {
             applyAccessibility(currentAccessibility === "on" ? "off" : "on", true);
+            blurAfterTap(accessibilityToggle);
         });
     }
 

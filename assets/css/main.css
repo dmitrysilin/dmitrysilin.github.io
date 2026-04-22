@@ -159,6 +159,7 @@ a {
     color: var(--muted);
     -webkit-appearance: none;
     appearance: none;
+    -webkit-tap-highlight-color: transparent;
     cursor: pointer;
     transition:
         color 0.2s ease,
@@ -166,11 +167,18 @@ a {
         background-color 0.2s ease;
 }
 
-.utility-toggle:hover,
 .utility-toggle:focus-visible {
     color: var(--text);
     border-color: var(--line-strong);
     background: var(--line);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .utility-toggle:hover {
+        color: var(--text);
+        border-color: var(--line-strong);
+        background: var(--line);
+    }
 }
 
 .accessibility-icon,
