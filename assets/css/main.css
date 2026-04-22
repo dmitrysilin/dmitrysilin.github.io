@@ -4,9 +4,12 @@
     --bg-bottom: #090909;
     --text: #f4f1eb;
     --muted: #a6a29a;
+    --block-muted: #a6a29a;
     --line: rgba(244, 241, 235, 0.12);
     --line-strong: rgba(244, 241, 235, 0.2);
     --panel: rgba(10, 10, 10, 0.92);
+    --scrollbar-thumb: rgba(244, 241, 235, 0.2);
+    --scrollbar-thumb-hover: #a6a29a;
     --sans: "Manrope", sans-serif;
     --mono: "IBM Plex Mono", monospace;
     --text-xs: 0.82rem;
@@ -23,9 +26,12 @@ html[data-theme="dark"] {
     --bg-bottom: #090909;
     --text: #f4f1eb;
     --muted: #a6a29a;
+    --block-muted: #a6a29a;
     --line: rgba(244, 241, 235, 0.12);
     --line-strong: rgba(244, 241, 235, 0.2);
     --panel: rgba(10, 10, 10, 0.92);
+    --scrollbar-thumb: rgba(244, 241, 235, 0.2);
+    --scrollbar-thumb-hover: #a6a29a;
 }
 
 html[data-theme="light"] {
@@ -35,9 +41,28 @@ html[data-theme="light"] {
     --bg-bottom: #efe7dc;
     --text: #181512;
     --muted: #6f675f;
+    --block-muted: #645c53;
     --line: rgba(24, 21, 18, 0.12);
     --line-strong: rgba(24, 21, 18, 0.18);
     --panel: rgba(252, 249, 243, 0.92);
+    --scrollbar-thumb: rgba(24, 21, 18, 0.24);
+    --scrollbar-thumb-hover: #5f564d;
+}
+
+html[data-accessibility="on"] {
+    font-size: clamp(17px, 0.35vw + 16px, 21px);
+    --muted: color-mix(in srgb, var(--text) 74%, var(--bg) 26%);
+    --block-muted: color-mix(in srgb, var(--text) 82%, var(--bg) 18%);
+    --line: color-mix(in srgb, var(--text) 24%, transparent);
+    --line-strong: color-mix(in srgb, var(--text) 38%, transparent);
+    --panel: color-mix(in srgb, var(--bg) 94%, var(--text) 6%);
+    --scrollbar-thumb: color-mix(in srgb, var(--text) 44%, transparent);
+    --scrollbar-thumb-hover: color-mix(in srgb, var(--text) 62%, var(--bg) 38%);
+    --text-xs: 1rem;
+    --text-sm: 1.12rem;
+    --text-md: 1.24rem;
+    --text-lg: clamp(1.38rem, 1.12rem + 0.8vw, 1.9rem);
+    --text-xl: clamp(2.4rem, 9.4vw, 6.4rem);
 }
 
 *,
@@ -51,7 +76,7 @@ html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
     scrollbar-width: thin;
-    scrollbar-color: var(--line-strong) transparent;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
     min-height: 100%;
     background: var(--bg);
 }
@@ -68,11 +93,11 @@ html::-webkit-scrollbar-thumb {
     min-height: 56px;
     border: 3px solid var(--bg);
     border-radius: 999px;
-    background: var(--line-strong);
+    background: var(--scrollbar-thumb);
 }
 
 html::-webkit-scrollbar-thumb:hover {
-    background: var(--muted);
+    background: var(--scrollbar-thumb-hover);
 }
 
 body {
@@ -84,6 +109,10 @@ body {
     line-height: 1.6;
     background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
     transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html[data-accessibility="on"] body {
+    line-height: 1.86;
 }
 
 a {
@@ -111,7 +140,13 @@ a {
     margin-bottom: 28px;
 }
 
-.theme-toggle {
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.utility-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -131,19 +166,22 @@ a {
         background-color 0.2s ease;
 }
 
-.theme-toggle:hover,
-.theme-toggle:focus-visible {
+.utility-toggle:hover,
+.utility-toggle:focus-visible {
     color: var(--text);
     border-color: var(--line-strong);
     background: var(--line);
 }
 
+.accessibility-icon,
 .theme-icon {
     width: 18px;
     height: 18px;
     overflow: visible;
 }
 
+.accessibility-icon path,
+.accessibility-icon circle,
 .theme-icon-sun,
 .theme-icon-rays path,
 .theme-icon-moon {
@@ -154,8 +192,20 @@ a {
     stroke-linejoin: round;
     transition:
         opacity 0.2s ease,
-        transform 0.2s ease;
+        transform 0.2s ease,
+        stroke-width 0.2s ease;
     transform-origin: center;
+}
+
+html[data-accessibility="on"] .accessibility-toggle {
+    color: var(--text);
+    border-color: var(--line-strong);
+    background: var(--line);
+}
+
+html[data-accessibility="on"] .accessibility-icon path,
+html[data-accessibility="on"] .accessibility-icon circle {
+    stroke-width: 2.1;
 }
 
 html[data-theme="light"] .theme-icon-sun,
@@ -278,7 +328,7 @@ h1 {
     border-top: 1px solid var(--line);
     max-width: 44rem;
     font-size: var(--text-md);
-    color: var(--muted);
+    color: var(--block-muted);
 }
 
 .experience-list {
@@ -299,7 +349,7 @@ h1 {
 .experience-period {
     font-family: var(--mono);
     font-size: var(--text-sm);
-    color: var(--muted);
+    color: var(--block-muted);
     white-space: nowrap;
 }
 
@@ -329,7 +379,7 @@ h1 {
     font-size: var(--text-xs);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--block-muted);
 }
 
 .api-actions {
@@ -348,7 +398,7 @@ h1 {
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: var(--muted);
+    color: var(--block-muted);
     font-family: var(--mono);
     font-size: var(--text-xs);
     line-height: 1;
@@ -392,7 +442,7 @@ h1 {
     margin-top: 14px;
     padding-top: 14px;
     border-top: 1px solid var(--line);
-    color: var(--muted);
+    color: var(--block-muted);
 }
 
 .projects-list {
@@ -418,7 +468,7 @@ h1 {
     font-family: var(--mono);
     font-size: var(--text-xs);
     letter-spacing: 0.04em;
-    color: var(--muted);
+    color: var(--block-muted);
 }
 
 .qa-easter {
@@ -458,6 +508,71 @@ h1 {
 :focus-visible {
     outline: 2px solid var(--text);
     outline-offset: 4px;
+}
+
+html[data-accessibility="on"] .links a,
+html[data-accessibility="on"] .links button,
+html[data-accessibility="on"] .experience-company,
+html[data-accessibility="on"] .project-link,
+html[data-accessibility="on"] .api-command,
+html[data-accessibility="on"] .api-response {
+    font-weight: 600;
+}
+
+html[data-accessibility="on"] .links a::after,
+html[data-accessibility="on"] .links button::after {
+    height: 2px;
+}
+
+html[data-accessibility="on"] .utility-toggle {
+    width: 46px;
+    height: 46px;
+}
+
+html[data-accessibility="on"] .accessibility-icon,
+html[data-accessibility="on"] .theme-icon {
+    width: 22px;
+    height: 22px;
+}
+
+html[data-accessibility="on"] .api-button,
+html[data-accessibility="on"] .lang-button {
+    letter-spacing: 0.08em;
+    font-weight: 600;
+}
+
+html[data-accessibility="on"] .role,
+html[data-accessibility="on"] .stack,
+html[data-accessibility="on"] .experience-period,
+html[data-accessibility="on"] .api-label,
+html[data-accessibility="on"] .api-button,
+html[data-accessibility="on"] .api-response,
+html[data-accessibility="on"] .last-updated,
+html[data-accessibility="on"] .qa-easter-body {
+    color: var(--text);
+}
+
+html[data-accessibility="on"] .stack,
+html[data-accessibility="on"] .api-block {
+    border-top-width: 2px;
+}
+
+html[data-accessibility="on"] .api-actions {
+    gap: 14px;
+}
+
+html[data-accessibility="on"] .experience-item {
+    gap: 16px;
+}
+
+html[data-accessibility="on"] .lang-switch,
+html[data-accessibility="on"] .top-actions {
+    gap: 14px;
+}
+
+html[data-accessibility="on"] :focus-visible {
+    outline-width: 3px;
+    outline-offset: 5px;
 }
 
 @media (max-width: 640px) {

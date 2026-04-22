@@ -26,14 +26,28 @@
     (function() {
       var theme = "dark";
       var themeColor = "#0a0a0a";
+      var accessibility = "off";
 
       try {
         var savedTheme = window.localStorage.getItem("site-theme");
+        var savedAccessibility = window.localStorage.getItem("site-accessibility");
 
         if (savedTheme === "light" || savedTheme === "dark") {
           theme = savedTheme;
         } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
           theme = "light";
+        }
+
+        if (savedAccessibility === "on" || savedAccessibility === "off") {
+          accessibility = savedAccessibility;
+        } else if (
+          window.matchMedia &&
+          (
+            window.matchMedia("(prefers-contrast: more)").matches ||
+            window.matchMedia("(forced-colors: active)").matches
+          )
+        ) {
+          accessibility = "on";
         }
       } catch (error) {}
 
@@ -42,11 +56,12 @@
       }
 
       document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.setAttribute("data-accessibility", accessibility);
       document.querySelector('meta[name="theme-color"]').setAttribute("content", themeColor);
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/main.css?v=20260422-5" />
-  <script src="./assets/js/main.js?v=20260422-4" defer></script>
+  <link rel="stylesheet" href="./assets/css/main.css?v=20260422-8" />
+  <script src="./assets/js/main.js?v=20260422-7" defer></script>
   <script id="structured-data" type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -99,22 +114,32 @@
   <main class="page" aria-label="Личный сайт Дмитрия Силина">
     <div class="page-inner">
       <div class="top-bar">
-        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" title="Переключить тему">
-          <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle class="theme-icon-sun" cx="12" cy="12" r="4"></circle>
-            <g class="theme-icon-rays">
-              <path d="M12 2.5V5"></path>
-              <path d="M12 19V21.5"></path>
-              <path d="M4.9 4.9L6.7 6.7"></path>
-              <path d="M17.3 17.3L19.1 19.1"></path>
-              <path d="M2.5 12H5"></path>
-              <path d="M19 12H21.5"></path>
-              <path d="M4.9 19.1L6.7 17.3"></path>
-              <path d="M17.3 6.7L19.1 4.9"></path>
-            </g>
-            <path class="theme-icon-moon" d="M15.6 3.5a7.6 7.6 0 1 0 4.9 13 8.7 8.7 0 1 1-4.9-13Z"></path>
-          </svg>
-        </button>
+        <div class="top-actions">
+          <button class="utility-toggle theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" title="Переключить тему">
+            <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="theme-icon-sun" cx="12" cy="12" r="4"></circle>
+              <g class="theme-icon-rays">
+                <path d="M12 2.5V5"></path>
+                <path d="M12 19V21.5"></path>
+                <path d="M4.9 4.9L6.7 6.7"></path>
+                <path d="M17.3 17.3L19.1 19.1"></path>
+                <path d="M2.5 12H5"></path>
+                <path d="M19 12H21.5"></path>
+                <path d="M4.9 19.1L6.7 17.3"></path>
+                <path d="M17.3 6.7L19.1 4.9"></path>
+              </g>
+              <path class="theme-icon-moon" d="M15.6 3.5a7.6 7.6 0 1 0 4.9 13 8.7 8.7 0 1 1-4.9-13Z"></path>
+            </svg>
+          </button>
+
+          <button class="utility-toggle accessibility-toggle" type="button" data-accessibility-toggle aria-label="Включить режим для слабовидящих"
+            title="Включить режим для слабовидящих">
+            <svg class="accessibility-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6Z"></path>
+              <circle cx="12" cy="12" r="3.2"></circle>
+            </svg>
+          </button>
+        </div>
 
         <div class="lang-switch" role="group" aria-label="Language switcher">
           <button class="lang-button is-active" type="button" data-lang-switch="ru" aria-pressed="true">RU</button>

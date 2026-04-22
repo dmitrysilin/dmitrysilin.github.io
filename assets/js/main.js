@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var API_ENDPOINT = "./api/about_me.json";
 
     var languageButtons = document.querySelectorAll("[data-lang-switch]");
+    var accessibilityToggle = document.querySelector("[data-accessibility-toggle]");
     var themeToggle = document.querySelector("[data-theme-toggle]");
     var main = document.querySelector(".page");
     var name = document.querySelector("[data-i18n='name']");
@@ -46,8 +47,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var ogTitle = document.querySelector('meta[property="og:title"]');
     var ogDescription = document.querySelector('meta[property="og:description"]');
     var themeMedia = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
+    var contrastMedia = window.matchMedia ? window.matchMedia("(prefers-contrast: more)") : null;
+    var forcedColorsMedia = window.matchMedia ? window.matchMedia("(forced-colors: active)") : null;
     var command = "curl " + API_URL;
     var currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    var currentAccessibility = document.documentElement.getAttribute("data-accessibility") || "off";
     var experienceExpanded = false;
     var isExpanded = false;
     var projectsExpanded = false;
@@ -71,6 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
             theme: {
                 light: "Включить светлую тему",
                 dark: "Включить тёмную тему"
+            },
+            accessibility: {
+                on: "Включить режим для слабовидящих",
+                off: "Выключить режим для слабовидящих"
             },
             telegram: "Телеграм",
             email: "Почта",
@@ -172,6 +180,10 @@ document.addEventListener("DOMContentLoaded", function () {
             theme: {
                 light: "Switch to light theme",
                 dark: "Switch to dark theme"
+            },
+            accessibility: {
+                on: "Enable accessibility mode",
+                off: "Disable accessibility mode"
             },
             telegram: "Telegram",
             email: "Email",
@@ -302,11 +314,31 @@ document.addEventListener("DOMContentLoaded", function () {
         return "dark";
     }
 
+    function detectSystemAccessibility() {
+        if ((contrastMedia && contrastMedia.matches) || (forcedColorsMedia && forcedColorsMedia.matches)) {
+            return "on";
+        }
+
+        return "off";
+    }
+
     function getSavedTheme() {
         try {
             var saved = window.localStorage.getItem("site-theme");
 
             if (saved === "light" || saved === "dark") {
+                return saved;
+            }
+        } catch (error) {}
+
+        return "";
+    }
+
+    function getSavedAccessibility() {
+        try {
+            var saved = window.localStorage.getItem("site-accessibility");
+
+            if (saved === "on" || saved === "off") {
                 return saved;
             }
         } catch (error) {}
@@ -323,6 +355,12 @@ document.addEventListener("DOMContentLoaded", function () {
     function saveTheme(theme) {
         try {
             window.localStorage.setItem("site-theme", theme);
+        } catch (error) {}
+    }
+
+    function saveAccessibility(value) {
+        try {
+            window.localStorage.setItem("site-accessibility", value);
         } catch (error) {}
     }
 
@@ -348,6 +386,19 @@ document.addEventListener("DOMContentLoaded", function () {
         themeToggle.setAttribute("aria-pressed", currentTheme === "light" ? "true" : "false");
     }
 
+    function updateAccessibilityToggle() {
+        if (!accessibilityToggle) {
+            return;
+        }
+
+        var accessibilityText = translations[currentLang].accessibility;
+        var label = currentAccessibility === "on" ? accessibilityText.off : accessibilityText.on;
+
+        accessibilityToggle.setAttribute("aria-label", label);
+        accessibilityToggle.setAttribute("title", label);
+        accessibilityToggle.setAttribute("aria-pressed", currentAccessibility === "on" ? "true" : "false");
+    }
+
     function applyTheme(theme, persist) {
         currentTheme = theme === "light" ? "light" : "dark";
         document.documentElement.setAttribute("data-theme", currentTheme);
@@ -360,6 +411,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (persist) {
             saveTheme(currentTheme);
+        }
+    }
+
+    function applyAccessibility(value, persist) {
+        currentAccessibility = value === "on" ? "on" : "off";
+        document.documentElement.setAttribute("data-accessibility", currentAccessibility);
+        updateAccessibilityToggle();
+
+        if (persist) {
+            saveAccessibility(currentAccessibility);
         }
     }
 
@@ -566,6 +627,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateLanguageButtons();
         updateThemeToggle();
+        updateAccessibilityToggle();
         syncExperienceState();
         syncApiState();
         syncProjectsState();
@@ -601,7 +663,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     currentLang = getSavedLanguage();
     currentTheme = getSavedTheme() || currentTheme || detectSystemTheme();
+    currentAccessibility = getSavedAccessibility() || currentAccessibility || detectSystemAccessibility();
     applyTheme(currentTheme, false);
+    applyAccessibility(currentAccessibility, false);
     applyLanguage(currentLang);
 
     if (copyButton) {
@@ -670,6 +734,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    if (accessibilityToggle) {
+        accessibilityToggle.addEventListener("click", function () {
+            applyAccessibility(currentAccessibility === "on" ? "off" : "on", true);
+        });
+    }
+
     if (themeMedia) {
         var handleThemeChange = function (event) {
             if (getSavedTheme()) {
@@ -683,6 +753,30 @@ document.addEventListener("DOMContentLoaded", function () {
             themeMedia.addEventListener("change", handleThemeChange);
         } else if (typeof themeMedia.addListener === "function") {
             themeMedia.addListener(handleThemeChange);
+        }
+    }
+
+    var handleAccessibilityChange = function () {
+        if (getSavedAccessibility()) {
+            return;
+        }
+
+        applyAccessibility(detectSystemAccessibility(), false);
+    };
+
+    if (contrastMedia) {
+        if (typeof contrastMedia.addEventListener === "function") {
+            contrastMedia.addEventListener("change", handleAccessibilityChange);
+        } else if (typeof contrastMedia.addListener === "function") {
+            contrastMedia.addListener(handleAccessibilityChange);
+        }
+    }
+
+    if (forcedColorsMedia) {
+        if (typeof forcedColorsMedia.addEventListener === "function") {
+            forcedColorsMedia.addEventListener("change", handleAccessibilityChange);
+        } else if (typeof forcedColorsMedia.addListener === "function") {
+            forcedColorsMedia.addListener(handleAccessibilityChange);
         }
     }
 
