@@ -49,8 +49,30 @@ html[data-theme="light"] {
 html {
     font-size: clamp(15px, 0.2vw + 14px, 18px);
     scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
     min-height: 100%;
     background: var(--bg);
+}
+
+html::-webkit-scrollbar {
+    width: 12px;
+}
+
+html::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+    min-height: 56px;
+    border: 3px solid var(--bg);
+    border-radius: 999px;
+    background: var(--line-strong);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+    background: var(--muted);
 }
 
 body {
