@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var LAST_UPDATED = "2026-04-20";
+    var LAST_UPDATED = "2026-04-22";
     var LAST_UPDATED_RU = LAST_UPDATED.split("-").reverse().join(".");
     var SITE_URL = "https://iloveqa.ru/";
     var API_URL = SITE_URL + "api/about_me.json";
     var API_ENDPOINT = "./api/about_me.json";
 
     var languageButtons = document.querySelectorAll("[data-lang-switch]");
+    var themeToggle = document.querySelector("[data-theme-toggle]");
     var main = document.querySelector(".page");
     var name = document.querySelector("[data-i18n='name']");
     var role = document.querySelector("[data-i18n='role']");
@@ -15,6 +16,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var wishlistLink = document.querySelector("[data-i18n='wishlist']");
     var shareButton = document.querySelector("[data-share-page]");
     var stack = document.querySelector("[data-i18n='stack']");
+    var experienceBlock = document.querySelector("[data-experience-block]");
+    var experienceLabel = document.querySelector("[data-i18n='experience_label']");
+    var experienceToggleButton = document.querySelector("[data-toggle-experience]");
+    var experiencePanel = document.querySelector("[data-experience-panel]");
+    var experienceList = document.querySelector("[data-experience-list]");
     var apiBlock = document.querySelector("[data-api-block]");
     var apiLabel = document.querySelector("[data-i18n='api_label']");
     var copyButton = document.querySelector("[data-copy-curl]");
@@ -34,11 +40,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var qaBody = document.querySelector("[data-qa-body]");
     var structuredData = document.querySelector("#structured-data");
     var metaDescription = document.querySelector('meta[name="description"]');
+    var themeColor = document.querySelector('meta[name="theme-color"]');
     var ogLocale = document.querySelector('meta[property="og:locale"]');
     var ogSiteName = document.querySelector('meta[property="og:site_name"]');
     var ogTitle = document.querySelector('meta[property="og:title"]');
     var ogDescription = document.querySelector('meta[property="og:description"]');
+    var themeMedia = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
     var command = "curl " + API_URL;
+    var currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+    var experienceExpanded = false;
     var isExpanded = false;
     var projectsExpanded = false;
     var qaVisible = false;
@@ -56,7 +66,12 @@ document.addEventListener("DOMContentLoaded", function () {
             pageLabel: "Личный сайт Дмитрия Силина",
             linksLabel: "Ссылки и действия",
             name: "Дмитрий Силин",
-            role: "QA-инженер",
+            roleBase: "QA-инженер",
+            roleJoiner: "в",
+            theme: {
+                light: "Включить светлую тему",
+                dark: "Включить тёмную тему"
+            },
             telegram: "Телеграм",
             email: "Почта",
             wishlist: "Вишлист",
@@ -68,8 +83,14 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             stack:
                 "REST, gRPC, GraphQL, SOAP, Kafka, Redis, Oracle, PostgreSQL, Mockingbird, Postman, Insomnia, Swagger, SoapUI, DevTools, DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.",
+            experienceLabel: "Опыт",
+            experience: [
+                { period: "2025 - сейчас", company: "Т-Банк", roleCompany: "Т-Банке" },
+                { period: "2023 - 2025", company: "Росбанк" },
+                { period: "2022 - 2023", company: "X5" }
+            ],
             apiLabel: "GET /api/about_me.json",
-            projectsLabel: "Проекты",
+            projectsLabel: "Пет-проекты",
             projectOne: "Бот \"Потрачено\"",
             projectTwo: "Бот \"Что посмотреть\"",
             lastUpdated: "Обновлено " + LAST_UPDATED_RU,
@@ -146,7 +167,12 @@ document.addEventListener("DOMContentLoaded", function () {
             pageLabel: "Personal website of Dmitry Silin",
             linksLabel: "Links and actions",
             name: "Dmitry Silin",
-            role: "QA engineer",
+            roleBase: "QA engineer",
+            roleJoiner: "at",
+            theme: {
+                light: "Switch to light theme",
+                dark: "Switch to dark theme"
+            },
             telegram: "Telegram",
             email: "Email",
             wishlist: "Wishlist",
@@ -158,8 +184,14 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             stack:
                 "REST, gRPC, GraphQL, SOAP, Kafka, Redis, Oracle, PostgreSQL, Mockingbird, Postman, Insomnia, Swagger, SoapUI, DevTools, DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.",
+            experienceLabel: "Experience",
+            experience: [
+                { period: "2025 - now", company: "T-Bank", roleCompany: "T-Bank" },
+                { period: "2023 - 2025", company: "Rosbank" },
+                { period: "2022 - 2023", company: "X5" }
+            ],
             apiLabel: "GET /api/about_me.json",
-            projectsLabel: "Projects",
+            projectsLabel: "Pet projects",
             projectOne: "Bot \"Потрачено\"",
             projectTwo: "Bot \"Что посмотреть\"",
             lastUpdated: "Updated " + LAST_UPDATED,
@@ -262,9 +294,35 @@ document.addEventListener("DOMContentLoaded", function () {
         return detectBrowserLanguage();
     }
 
+    function detectSystemTheme() {
+        if (themeMedia && themeMedia.matches) {
+            return "light";
+        }
+
+        return "dark";
+    }
+
+    function getSavedTheme() {
+        try {
+            var saved = window.localStorage.getItem("site-theme");
+
+            if (saved === "light" || saved === "dark") {
+                return saved;
+            }
+        } catch (error) {}
+
+        return "";
+    }
+
     function saveLanguage(lang) {
         try {
             window.localStorage.setItem("site-language", lang);
+        } catch (error) {}
+    }
+
+    function saveTheme(theme) {
+        try {
+            window.localStorage.setItem("site-theme", theme);
         } catch (error) {}
     }
 
@@ -274,6 +332,86 @@ document.addEventListener("DOMContentLoaded", function () {
             button.classList.toggle("is-active", isActive);
             button.setAttribute("aria-pressed", isActive ? "true" : "false");
         });
+    }
+
+    function updateThemeToggle() {
+        if (!themeToggle) {
+            return;
+        }
+
+        var themeText = translations[currentLang].theme;
+        var nextTheme = currentTheme === "dark" ? "light" : "dark";
+        var label = nextTheme === "light" ? themeText.light : themeText.dark;
+
+        themeToggle.setAttribute("aria-label", label);
+        themeToggle.setAttribute("title", label);
+        themeToggle.setAttribute("aria-pressed", currentTheme === "light" ? "true" : "false");
+    }
+
+    function applyTheme(theme, persist) {
+        currentTheme = theme === "light" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", currentTheme);
+
+        if (themeColor) {
+            themeColor.setAttribute("content", currentTheme === "light" ? "#f7f2ea" : "#0a0a0a");
+        }
+
+        updateThemeToggle();
+
+        if (persist) {
+            saveTheme(currentTheme);
+        }
+    }
+
+    function getCurrentRoleCompany(text) {
+        if (!text || !Array.isArray(text.experience) || text.experience.length === 0) {
+            return "";
+        }
+
+        return text.experience[0].roleCompany || text.experience[0].company || "";
+    }
+
+    function buildRole(text) {
+        var currentCompany = getCurrentRoleCompany(text);
+        return currentCompany ? text.roleBase + " " + text.roleJoiner + " " + currentCompany : text.roleBase;
+    }
+
+    function renderExperience(text) {
+        if (!experienceLabel || !experienceList) {
+            return;
+        }
+
+        experienceLabel.textContent = text.experienceLabel;
+        experienceList.replaceChildren();
+
+        text.experience.forEach(function (item) {
+            var listItem = document.createElement("li");
+            var period = document.createElement("span");
+            var company = document.createElement("span");
+
+            listItem.className = "experience-item";
+            period.className = "experience-period";
+            company.className = "experience-company";
+
+            period.textContent = item.period;
+            company.textContent = item.company;
+
+            listItem.appendChild(period);
+            listItem.appendChild(company);
+            experienceList.appendChild(listItem);
+        });
+    }
+
+    function syncExperienceState() {
+        if (!experienceBlock || !experienceToggleButton || !experiencePanel) {
+            return;
+        }
+
+        var text = translations[currentLang].api;
+        experienceBlock.dataset.expanded = experienceExpanded ? "true" : "false";
+        experienceToggleButton.textContent = experienceExpanded ? text.hide : text.expand;
+        experienceToggleButton.setAttribute("aria-expanded", experienceExpanded ? "true" : "false");
+        experiencePanel.hidden = !experienceExpanded;
     }
 
     function getDailyMessage(messages) {
@@ -367,7 +505,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (role) {
-            role.textContent = text.role;
+            role.textContent = buildRole(text);
         }
 
         if (telegramLink) {
@@ -389,6 +527,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (stack) {
             stack.textContent = text.stack;
         }
+
+        renderExperience(text);
 
         if (apiLabel) {
             apiLabel.textContent = text.apiLabel;
@@ -425,6 +565,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         updateLanguageButtons();
+        updateThemeToggle();
+        syncExperienceState();
         syncApiState();
         syncProjectsState();
         saveLanguage(lang);
@@ -458,6 +600,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     currentLang = getSavedLanguage();
+    currentTheme = getSavedTheme() || currentTheme || detectSystemTheme();
+    applyTheme(currentTheme, false);
     applyLanguage(currentLang);
 
     if (copyButton) {
@@ -519,6 +663,35 @@ document.addEventListener("DOMContentLoaded", function () {
             applyLanguage(lang);
         });
     });
+
+    if (themeToggle) {
+        themeToggle.addEventListener("click", function () {
+            applyTheme(currentTheme === "dark" ? "light" : "dark", true);
+        });
+    }
+
+    if (themeMedia) {
+        var handleThemeChange = function (event) {
+            if (getSavedTheme()) {
+                return;
+            }
+
+            applyTheme(event.matches ? "light" : "dark", false);
+        };
+
+        if (typeof themeMedia.addEventListener === "function") {
+            themeMedia.addEventListener("change", handleThemeChange);
+        } else if (typeof themeMedia.addListener === "function") {
+            themeMedia.addListener(handleThemeChange);
+        }
+    }
+
+    if (experienceToggleButton) {
+        experienceToggleButton.addEventListener("click", function () {
+            experienceExpanded = !experienceExpanded;
+            syncExperienceState();
+        });
+    }
 
     if (toggleButton) {
         toggleButton.addEventListener("click", function () {

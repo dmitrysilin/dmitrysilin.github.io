@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Дмитрий Силин | QA-инженер" />
   <meta name="theme-color" content="#0a0a0a" />
+  <meta name="color-scheme" content="dark light" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ru_RU" />
   <meta property="og:site_name" content="Дмитрий Силин" />
@@ -21,8 +22,31 @@
   <link
     href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="./assets/css/main.css?v=20260420-5" />
-  <script src="./assets/js/main.js?v=20260420-5" defer></script>
+  <script>
+    (function() {
+      var theme = "dark";
+      var themeColor = "#0a0a0a";
+
+      try {
+        var savedTheme = window.localStorage.getItem("site-theme");
+
+        if (savedTheme === "light" || savedTheme === "dark") {
+          theme = savedTheme;
+        } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+          theme = "light";
+        }
+      } catch (error) {}
+
+      if (theme === "light") {
+        themeColor = "#f7f2ea";
+      }
+
+      document.documentElement.setAttribute("data-theme", theme);
+      document.querySelector('meta[name="theme-color"]').setAttribute("content", themeColor);
+    })();
+  </script>
+  <link rel="stylesheet" href="./assets/css/main.css?v=20260422-4" />
+  <script src="./assets/js/main.js?v=20260422-4" defer></script>
   <script id="structured-data" type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -74,14 +98,33 @@
 <body>
   <main class="page" aria-label="Личный сайт Дмитрия Силина">
     <div class="page-inner">
-      <div class="lang-switch" role="group" aria-label="Language switcher">
-        <button class="lang-button is-active" type="button" data-lang-switch="ru" aria-pressed="true">RU</button>
-        <span class="lang-divider" aria-hidden="true">|</span>
-        <button class="lang-button" type="button" data-lang-switch="en" aria-pressed="false">ENG</button>
+      <div class="top-bar">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" title="Переключить тему">
+          <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle class="theme-icon-sun" cx="12" cy="12" r="4"></circle>
+            <g class="theme-icon-rays">
+              <path d="M12 2.5V5"></path>
+              <path d="M12 19V21.5"></path>
+              <path d="M4.9 4.9L6.7 6.7"></path>
+              <path d="M17.3 17.3L19.1 19.1"></path>
+              <path d="M2.5 12H5"></path>
+              <path d="M19 12H21.5"></path>
+              <path d="M4.9 19.1L6.7 17.3"></path>
+              <path d="M17.3 6.7L19.1 4.9"></path>
+            </g>
+            <path class="theme-icon-moon" d="M15.6 3.5a7.6 7.6 0 1 0 4.9 13 8.7 8.7 0 1 1-4.9-13Z"></path>
+          </svg>
+        </button>
+
+        <div class="lang-switch" role="group" aria-label="Language switcher">
+          <button class="lang-button is-active" type="button" data-lang-switch="ru" aria-pressed="true">RU</button>
+          <span class="lang-divider" aria-hidden="true">|</span>
+          <button class="lang-button" type="button" data-lang-switch="en" aria-pressed="false">ENG</button>
+        </div>
       </div>
 
       <h1 data-i18n="name">Дмитрий Силин</h1>
-      <p class="role" data-i18n="role">QA-инженер</p>
+      <p class="role" data-i18n="role">QA-инженер в Т-Банке</p>
 
       <div class="links" aria-label="Ссылки и действия">
         <a href="https://t.me/iloveQA" target="_blank" rel="noopener noreferrer" data-i18n="telegram">Телеграм</a>
@@ -96,27 +139,37 @@
         DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.
       </p>
 
-      <section class="api-block" aria-labelledby="api-title" data-api-block>
+      <section class="api-block experience-block" aria-labelledby="experience-title" data-experience-block>
         <div class="api-head">
-          <p class="api-label" id="api-title" data-i18n="api_label">GET /api/about_me.json</p>
+          <p class="api-label" id="experience-title" data-i18n="experience_label">Опыт</p>
           <div class="api-actions">
-            <button class="api-button" type="button" data-copy-curl>Копировать</button>
-            <button class="api-button" type="button" data-toggle-api aria-expanded="false" aria-controls="api-panel">
+            <button class="api-button" type="button" data-toggle-experience aria-expanded="false" aria-controls="experience-panel">
               Раскрыть
             </button>
-            <button class="api-button" type="button" data-run-api hidden>Запустить</button>
           </div>
         </div>
 
-        <div class="api-panel" id="api-panel" data-api-panel hidden>
-          <code class="api-command">curl https://iloveqa.ru/api/about_me.json</code>
-          <pre class="api-response" data-api-response hidden aria-live="polite"></pre>
+        <div class="api-panel" id="experience-panel" data-experience-panel hidden>
+          <ul class="experience-list" data-experience-list>
+            <li class="experience-item">
+              <span class="experience-period">2025 - сейчас</span>
+              <span class="experience-company">Т-Банк</span>
+            </li>
+            <li class="experience-item">
+              <span class="experience-period">2023 - 2025</span>
+              <span class="experience-company">Росбанк</span>
+            </li>
+            <li class="experience-item">
+              <span class="experience-period">2022 - 2023</span>
+              <span class="experience-company">X5</span>
+            </li>
+          </ul>
         </div>
       </section>
 
       <section class="api-block projects-block" aria-labelledby="projects-title" data-projects-block>
         <div class="api-head">
-          <p class="api-label" id="projects-title" data-i18n="projects_label">Проекты</p>
+          <p class="api-label" id="projects-title" data-i18n="projects_label">Пет-проекты</p>
           <div class="api-actions">
             <button class="api-button" type="button" data-toggle-projects aria-expanded="false" aria-controls="projects-panel">
               Раскрыть
@@ -142,7 +195,25 @@
         </div>
       </section>
 
-      <p class="last-updated" data-i18n="last_updated">Обновлено 2026-04-20</p>
+      <section class="api-block" aria-labelledby="api-title" data-api-block>
+        <div class="api-head">
+          <p class="api-label" id="api-title" data-i18n="api_label">GET /api/about_me.json</p>
+          <div class="api-actions">
+            <button class="api-button" type="button" data-copy-curl>Копировать</button>
+            <button class="api-button" type="button" data-toggle-api aria-expanded="false" aria-controls="api-panel">
+              Раскрыть
+            </button>
+            <button class="api-button" type="button" data-run-api hidden>Запустить</button>
+          </div>
+        </div>
+
+        <div class="api-panel" id="api-panel" data-api-panel hidden>
+          <code class="api-command">curl https://iloveqa.ru/api/about_me.json</code>
+          <pre class="api-response" data-api-response hidden aria-live="polite"></pre>
+        </div>
+      </section>
+
+      <p class="last-updated" data-i18n="last_updated">Обновлено 22.04.2026</p>
     </div>
   </main>
 
