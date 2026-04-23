@@ -68,8 +68,8 @@
       document.querySelector('meta[name="theme-color"]').setAttribute("content", themeColor);
     })();
   </script>
-  <link rel="stylesheet" href="./assets/css/main.css?v=20260423-8" />
-  <script src="./assets/js/main.js?v=20260423-7" defer></script>
+  <link rel="stylesheet" href="./assets/css/main.css?v=20260423-16" />
+  <script src="./assets/js/main.js?v=20260423-11" defer></script>
   <script id="structured-data" type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -109,8 +109,8 @@
       },
       "country_code": "RU",
       "summary": {
-        "ru": "QA-инженер, который работает с API, интеграциями, логами, релизами и аккуратными процессами.",
-        "en": "QA engineer working with APIs, integrations, logs, releases and clean processes."
+        "ru": "Работаю в финтехе и занимаюсь backend и интеграционным тестированием. Мне интересно разбираться в том как сервисы взаимодействуют друг с другом, где могут возникать ошибки и что может повлиять на качество продукта.\n\nВ работе использую API, логи, базы данных и разные инструменты для анализа поведения системы.\n\nПостепенно развиваюсь в автоматизации. Пишу автотесты на Python и ищу способы делать процессы тестирования быстрее и удобнее.",
+        "en": "I work in fintech and focus on backend and integration testing. I like understanding how services interact with each other, where failures can appear, and what can affect product quality.\n\nIn my work I use APIs, logs, databases, and different tools to analyze system behavior.\n\nI am gradually growing in automation, writing Python autotests and looking for ways to make testing processes faster and more convenient."
       },
       "contacts": {
         "telegram": "https://t.me/iloveQA",
@@ -305,75 +305,69 @@
 
       <p class="status-region" data-status-region role="status" aria-live="polite" aria-atomic="true"></p>
 
-      <section class="detail-block" aria-labelledby="stack-title" data-stack-block>
-        <div class="detail-head">
-          <p class="section-label" id="stack-title" data-i18n="stack_label">Стек</p>
-          <div class="detail-actions">
-            <button class="detail-button" type="button" data-toggle-stack aria-expanded="false"
-              aria-controls="stack-panel">
-              + Раскрыть
-            </button>
-          </div>
-        </div>
-
-        <div class="detail-panel" id="stack-panel" data-stack-panel hidden>
-          <div class="stack-groups" data-stack-groups></div>
-        </div>
+      <section class="intro-block intro-text" data-profile-summary>
+        <p class="intro-paragraph">
+          Работаю в финтехе и занимаюсь backend и интеграционным тестированием. Мне интересно разбираться в том как
+          сервисы взаимодействуют друг с другом, где могут возникать ошибки и что может повлиять на качество продукта.
+        </p>
+        <p class="intro-paragraph">
+          В работе использую API, логи, базы данных и разные инструменты для анализа поведения системы.
+        </p>
+        <p class="intro-paragraph">
+          Постепенно развиваюсь в автоматизации. Пишу автотесты на Python и ищу способы делать процессы тестирования
+          быстрее и удобнее.
+        </p>
       </section>
 
-      <section class="detail-block" aria-labelledby="experience-title" data-experience-block>
-        <div class="detail-head">
-          <p class="section-label" id="experience-title" data-i18n="experience_label">Опыт</p>
-          <div class="detail-actions">
-            <button class="detail-button" type="button" data-toggle-experience aria-expanded="false"
-              aria-controls="experience-panel">
-              + Раскрыть
-            </button>
+      <div class="detail-list">
+        <section class="detail-block" aria-labelledby="stack-title" data-stack-block>
+          <div class="detail-head">
+            <p class="section-label" id="stack-title" data-i18n="stack_label">Стек</p>
+            <div class="detail-actions">
+              <button class="detail-button detail-toggle" type="button" data-toggle-stack aria-expanded="false"
+                aria-controls="stack-panel" aria-label="Раскрыть" title="Раскрыть">
+                +
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div class="detail-panel" id="experience-panel" data-experience-panel hidden>
-          <ul class="experience-list" data-experience-list></ul>
-        </div>
-      </section>
-
-      <section class="detail-block" aria-labelledby="projects-title" data-projects-block>
-        <div class="detail-head">
-          <p class="section-label" id="projects-title" data-i18n="projects_label">Личные проекты</p>
-          <div class="detail-actions">
-            <button class="detail-button" type="button" data-toggle-projects aria-expanded="false"
-              aria-controls="projects-panel">
-              + Раскрыть
-            </button>
+          <div class="detail-panel" id="stack-panel" data-stack-panel hidden>
+            <div class="stack-groups" data-stack-groups></div>
           </div>
-        </div>
+        </section>
 
-        <div class="detail-panel" id="projects-panel" data-projects-panel hidden>
-          <ul class="projects-list" data-projects-list></ul>
-        </div>
-      </section>
-
-      <section class="detail-block" aria-labelledby="api-title" data-api-block>
-        <div class="detail-head">
-          <p class="section-label" id="api-title" data-i18n="api_label">GET /api/about_me.json</p>
-          <div class="detail-actions">
-            <button class="detail-button" type="button" data-copy-curl>Копировать</button>
-            <button class="detail-button" type="button" data-toggle-api aria-expanded="false" aria-controls="api-panel">
-              + Раскрыть
-            </button>
-            <button class="detail-button" type="button" data-run-api hidden>Запустить</button>
+        <section class="detail-block" aria-labelledby="experience-title" data-experience-block>
+          <div class="detail-head">
+            <p class="section-label" id="experience-title" data-i18n="experience_label">Опыт</p>
+            <div class="detail-actions">
+              <button class="detail-button detail-toggle" type="button" data-toggle-experience aria-expanded="false"
+                aria-controls="experience-panel" aria-label="Раскрыть" title="Раскрыть">
+                +
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div class="detail-panel" id="api-panel" data-api-panel hidden>
-          <code class="api-command" data-api-command>curl https://iloveqa.ru/api/about_me.json</code>
-          <pre class="api-response" data-api-response hidden></pre>
-        </div>
-      </section>
+          <div class="detail-panel" id="experience-panel" data-experience-panel hidden>
+            <ul class="experience-list" data-experience-list></ul>
+          </div>
+        </section>
 
-      <div class="footer-scanline" aria-hidden="true">
-        <span class="footer-scanline-track"></span>
-        <span class="footer-scanline-pulse"></span>
+        <section class="detail-block" aria-labelledby="projects-title" data-projects-block>
+          <div class="detail-head">
+            <p class="section-label" id="projects-title" data-i18n="projects_label">Личные проекты</p>
+            <div class="detail-actions">
+              <button class="detail-button detail-toggle" type="button" data-toggle-projects aria-expanded="false"
+                aria-controls="projects-panel" aria-label="Раскрыть" title="Раскрыть">
+                +
+              </button>
+            </div>
+          </div>
+
+          <div class="detail-panel" id="projects-panel" data-projects-panel hidden>
+            <ul class="projects-list" data-projects-list></ul>
+          </div>
+        </section>
+
       </div>
 
       <footer class="site-footer">

@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     var LAST_UPDATED = "2026-04-23";
     var SITE_URL = "https://iloveqa.ru/";
-    var API_PATH = "api/about_me.json";
-    var API_URL = SITE_URL + API_PATH;
-    var API_ENDPOINT = "./" + API_PATH;
+    var API_ENDPOINT = "./api/about_me.json";
     var pageType = document.body && document.body.getAttribute("data-page") === "404" ? "not-found" : "home";
     var isLocalFile = window.location && window.location.protocol === "file:";
 
@@ -19,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var shareButton = document.querySelector("[data-share-page]");
     var footerWishlist = document.querySelector("[data-footer-wishlist]");
     var statusRegion = document.querySelector("[data-status-region]");
-    var footerScanline = document.querySelector(".footer-scanline");
+    var profileSummary = document.querySelector("[data-profile-summary]");
     var stackBlock = document.querySelector("[data-stack-block]");
     var stackLabel = document.querySelector("[data-i18n='stack_label']");
     var stackToggleButton = document.querySelector("[data-toggle-stack]");
@@ -35,14 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var projectsToggleButton = document.querySelector("[data-toggle-projects]");
     var projectsPanel = document.querySelector("[data-projects-panel]");
     var projectsList = document.querySelector("[data-projects-list]");
-    var apiBlock = document.querySelector("[data-api-block]");
-    var apiLabel = document.querySelector("[data-i18n='api_label']");
-    var apiCommand = document.querySelector("[data-api-command]");
-    var copyButton = document.querySelector("[data-copy-curl]");
-    var toggleButton = document.querySelector("[data-toggle-api]");
-    var runButton = document.querySelector("[data-run-api]");
-    var apiPanel = document.querySelector("[data-api-panel]");
-    var response = document.querySelector("[data-api-response]");
+    var detailHeads = document.querySelectorAll(".detail-head");
     var lastUpdated = document.querySelector("[data-last-updated]");
     var notFoundCode = document.querySelector("[data-not-found-code]");
     var notFoundTitle = document.querySelector("[data-not-found-title]");
@@ -68,7 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var contrastMedia = window.matchMedia ? window.matchMedia("(prefers-contrast: more)") : null;
     var forcedColorsMedia = window.matchMedia ? window.matchMedia("(forced-colors: active)") : null;
     var touchLikeMedia = window.matchMedia ? window.matchMedia("(hover: none), (pointer: coarse)") : null;
-    var reducedMotionMedia = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
 
     var currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
     var currentAccessibility = document.documentElement.getAttribute("data-accessibility") || "off";
@@ -76,13 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var stackExpanded = false;
     var experienceExpanded = false;
     var projectsExpanded = false;
-    var apiExpanded = false;
     var qaVisible = false;
     var qaSequence = "";
     var profileData = null;
     var profilePromise = null;
     var statusTimer = 0;
-    var scanlineTimer = 0;
 
     var translations = {
         ru: {
@@ -103,16 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
             stackLabel: "Стек",
             experienceLabel: "Опыт",
             projectsLabel: "Личные проекты",
-            apiLabel: "GET /api/about_me.json",
             block: {
                 expand: "Раскрыть",
                 hide: "Скрыть"
-            },
-            api: {
-                copy: "Копировать",
-                run: "Запустить",
-                loading: "Загрузка",
-                fetchError: "Не удалось получить /api/about_me.json"
             },
             shareStatus: {
                 shared: "Окно шаринга открыто"
@@ -120,11 +101,8 @@ document.addEventListener("DOMContentLoaded", function () {
             status: {
                 emailCopied: "Почта скопирована",
                 linkCopied: "Ссылка скопирована",
-                curlCopied: "curl скопирован",
-                jsonLoaded: "JSON загружен",
                 copyError: "Не удалось скопировать",
-                shareError: "Не удалось поделиться",
-                jsonError: "Не удалось получить /api/about_me.json"
+                shareError: "Не удалось поделиться"
             },
             footerUpdated: "Обновлено",
             theme: {
@@ -206,16 +184,9 @@ document.addEventListener("DOMContentLoaded", function () {
             stackLabel: "Stack",
             experienceLabel: "Experience",
             projectsLabel: "Personal projects",
-            apiLabel: "GET /api/about_me.json",
             block: {
                 expand: "Expand",
                 hide: "Hide"
-            },
-            api: {
-                copy: "Copy",
-                run: "Run",
-                loading: "Loading",
-                fetchError: "Unable to fetch /api/about_me.json"
             },
             shareStatus: {
                 shared: "Share sheet opened"
@@ -223,11 +194,8 @@ document.addEventListener("DOMContentLoaded", function () {
             status: {
                 emailCopied: "Email copied",
                 linkCopied: "Link copied",
-                curlCopied: "curl copied",
-                jsonLoaded: "JSON loaded",
                 copyError: "Could not copy",
-                shareError: "Could not share",
-                jsonError: "Unable to fetch /api/about_me.json"
+                shareError: "Could not share"
             },
             footerUpdated: "Updated",
             theme: {
@@ -540,47 +508,6 @@ document.addEventListener("DOMContentLoaded", function () {
         statusTimer = window.setTimeout(clearStatus, 2200);
     }
 
-    function clearScanlineTimer() {
-        if (!scanlineTimer) {
-            return;
-        }
-
-        window.clearTimeout(scanlineTimer);
-        scanlineTimer = 0;
-    }
-
-    function animateScanline() {
-        if (!footerScanline) {
-            return;
-        }
-
-        clearScanlineTimer();
-
-        if (reducedMotionMedia && reducedMotionMedia.matches) {
-            footerScanline.style.setProperty("--scan-left", "38%");
-            footerScanline.style.setProperty("--scan-width", "22%");
-            footerScanline.style.setProperty("--scan-opacity", "0.4");
-            footerScanline.style.setProperty("--scan-duration", "0ms");
-            return;
-        }
-
-        function movePulse() {
-            var width = 12 + Math.random() * 34;
-            var left = -8 + Math.random() * 104;
-            var opacity = 0.18 + Math.random() * 0.68;
-            var duration = 720 + Math.floor(Math.random() * 2100);
-
-            footerScanline.style.setProperty("--scan-left", left.toFixed(2) + "%");
-            footerScanline.style.setProperty("--scan-width", width.toFixed(2) + "%");
-            footerScanline.style.setProperty("--scan-opacity", opacity.toFixed(2));
-            footerScanline.style.setProperty("--scan-duration", duration + "ms");
-
-            scanlineTimer = window.setTimeout(movePulse, Math.max(260, Math.round(duration * (0.45 + Math.random() * 0.5))));
-        }
-
-        movePulse();
-    }
-
     function updateLastUpdated(profile) {
         if (!lastUpdated) {
             return;
@@ -588,6 +515,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
         lastUpdated.textContent =
             translations[currentLang].footerUpdated + " " + formatDate(getProfileUpdatedAt(profile), currentLang);
+    }
+
+    function renderProfileSummary(profile) {
+        if (!profileSummary) {
+            return;
+        }
+
+        var summaryText = profile ? getLocalizedValue(profile.summary, currentLang) : "";
+        var paragraphs = String(summaryText || "")
+            .split(/\n\s*\n/g)
+            .map(function (paragraph) {
+                return paragraph.trim();
+            })
+            .filter(Boolean);
+
+        profileSummary.replaceChildren();
+
+        paragraphs.forEach(function (paragraph) {
+            var paragraphElement = document.createElement("p");
+            paragraphElement.className = "intro-paragraph";
+            paragraphElement.textContent = paragraph;
+            profileSummary.appendChild(paragraphElement);
+        });
     }
 
     function renderStackGroups(profile) {
@@ -754,11 +704,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         var text = translations[currentLang].block;
-        var prefix = expanded ? "− " : "+ ";
+        var actionText = expanded ? text.hide : text.expand;
 
         block.dataset.expanded = expanded ? "true" : "false";
-        button.textContent = prefix + (expanded ? text.hide : text.expand);
+        button.textContent = expanded ? "\u2212" : "+";
         button.setAttribute("aria-expanded", expanded ? "true" : "false");
+        button.setAttribute("aria-label", actionText);
+        button.setAttribute("title", actionText);
         panel.hidden = !expanded;
     }
 
@@ -772,15 +724,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function syncProjectsState() {
         syncDetailState(projectsBlock, projectsToggleButton, projectsPanel, projectsExpanded);
-    }
-
-    function syncApiState() {
-        syncDetailState(apiBlock, toggleButton, apiPanel, apiExpanded);
-
-        if (runButton) {
-            runButton.hidden = !apiExpanded;
-            runButton.textContent = translations[currentLang].api.run;
-        }
     }
 
     function renderNotFound(text) {
@@ -823,6 +766,8 @@ document.addEventListener("DOMContentLoaded", function () {
             shareButton.textContent = text.share;
         }
 
+        renderProfileSummary(profileData);
+
         if (footerWishlist) {
             footerWishlist.textContent = text.wishlist;
             footerWishlist.href =
@@ -841,18 +786,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (projectsLabel) {
             projectsLabel.textContent = text.projectsLabel;
-        }
-
-        if (apiLabel) {
-            apiLabel.textContent = text.apiLabel;
-        }
-
-        if (copyButton) {
-            copyButton.textContent = text.api.copy;
-        }
-
-        if (apiCommand) {
-            apiCommand.textContent = "curl " + API_URL;
         }
 
         updateLastUpdated(profileData);
@@ -884,7 +817,6 @@ document.addEventListener("DOMContentLoaded", function () {
         syncStackState();
         syncExperienceState();
         syncProjectsState();
-        syncApiState();
         renderQaPanel();
         saveLanguage(lang);
     }
@@ -1012,24 +944,12 @@ document.addEventListener("DOMContentLoaded", function () {
     currentAccessibility = getSavedAccessibility() || currentAccessibility || detectSystemAccessibility();
     applyTheme(currentTheme, false);
     applyAccessibility(currentAccessibility, false);
-    animateScanline();
     applyLanguage(currentLang);
 
     requestProfile(false)
         .then(function () {
             applyLanguage(currentLang);
         }, function () {});
-
-    if (copyButton) {
-        copyButton.addEventListener("click", function () {
-            copyText("curl " + API_URL)
-                .then(function () {
-                    showStatus(translations[currentLang].status.curlCopied);
-                }, function () {
-                    showStatus(translations[currentLang].status.copyError);
-                });
-        });
-    }
 
     if (emailButton) {
         emailButton.addEventListener("click", function () {
@@ -1146,18 +1066,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    if (reducedMotionMedia) {
-        var handleReducedMotionChange = function () {
-            animateScanline();
-        };
-
-        if (typeof reducedMotionMedia.addEventListener === "function") {
-            reducedMotionMedia.addEventListener("change", handleReducedMotionChange);
-        } else if (typeof reducedMotionMedia.addListener === "function") {
-            reducedMotionMedia.addListener(handleReducedMotionChange);
-        }
-    }
-
     if (experienceToggleButton) {
         experienceToggleButton.addEventListener("click", function () {
             experienceExpanded = !experienceExpanded;
@@ -1179,41 +1087,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    if (toggleButton) {
-        toggleButton.addEventListener("click", function () {
-            apiExpanded = !apiExpanded;
-            syncApiState();
-        });
-    }
+    detailHeads.forEach(function (head) {
+        head.addEventListener("click", function (event) {
+            if (event.target && typeof event.target.closest === "function" && event.target.closest("button, a")) {
+                return;
+            }
 
-    if (runButton && response) {
-        runButton.addEventListener("click", function () {
-            runButton.disabled = true;
-            runButton.textContent = translations[currentLang].api.loading;
-
-            requestProfile(true)
-                .then(function (data) {
-                    response.hidden = false;
-                    response.textContent = JSON.stringify(data, null, 2);
-                    showStatus(translations[currentLang].status.jsonLoaded);
-                    applyLanguage(currentLang);
-                }, function () {
-                    response.hidden = false;
-                    response.textContent = JSON.stringify(
-                        {
-                            error: translations[currentLang].api.fetchError
-                        },
-                        null,
-                        2
-                    );
-                    showStatus(translations[currentLang].status.jsonError);
-                })
-                .then(function () {
-                    runButton.disabled = false;
-                    runButton.textContent = translations[currentLang].api.run;
-                });
+            var toggle = head.querySelector(".detail-toggle");
+            if (toggle) {
+                toggle.click();
+            }
         });
-    }
+    });
 
     document.addEventListener("keydown", function (event) {
         if (event.key === "Escape") {

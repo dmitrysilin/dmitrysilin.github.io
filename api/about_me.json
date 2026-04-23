@@ -17,8 +17,8 @@
   },
   "country_code": "RU",
   "summary": {
-    "ru": "QA-инженер, который работает с API, интеграциями, логами, релизами и аккуратными процессами.",
-    "en": "QA engineer working with APIs, integrations, logs, releases and clean processes."
+    "ru": "Работаю в финтехе и занимаюсь backend и интеграционным тестированием. Мне интересно разбираться в том как сервисы взаимодействуют друг с другом, где могут возникать ошибки и что может повлиять на качество продукта.\n\nВ работе использую API, логи, базы данных и разные инструменты для анализа поведения системы.\n\nПостепенно развиваюсь в автоматизации. Пишу автотесты на Python и ищу способы делать процессы тестирования быстрее и удобнее.",
+    "en": "I work in fintech and focus on backend and integration testing. I like understanding how services interact with each other, where failures can appear, and what can affect product quality.\n\nIn my work I use APIs, logs, databases, and different tools to analyze system behavior.\n\nI am gradually growing in automation, writing Python autotests and looking for ways to make testing processes faster and more convenient."
   },
   "contacts": {
     "telegram": "https://t.me/iloveQA",
