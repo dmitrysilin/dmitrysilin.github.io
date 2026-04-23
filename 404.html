@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Страница не найдена на сайте Дмитрия Силина" />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="color-scheme" content="dark light" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:site_name" content="Дмитрий Силин" />
+  <meta property="og:title" content="404 | Дмитрий Силин" />
+  <meta property="og:description" content="Страница не найдена" />
+  <meta property="og:url" content="https://iloveqa.ru/404.html" />
+  <meta property="og:image" content="https://iloveqa.ru/assets/og/og-card.png" />
+  <meta property="og:image:alt" content="404 страница сайта Дмитрия Силина" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="404 | Дмитрий Силин" />
+  <meta name="twitter:description" content="Страница не найдена" />
+  <meta name="twitter:image" content="https://iloveqa.ru/assets/og/og-card.png" />
+  <meta name="twitter:image:alt" content="404 страница сайта Дмитрия Силина" />
+  <title>404 | Дмитрий Силин</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <script>
+    (function () {
+      var theme = "dark";
+      var themeColor = "#0a0a0a";
+      var accessibility = "off";
+
+      try {
+        var savedTheme = window.localStorage.getItem("site-theme");
+        var savedAccessibility = window.localStorage.getItem("site-accessibility");
+
+        if (savedTheme === "light" || savedTheme === "dark") {
+          theme = savedTheme;
+        } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+          theme = "light";
+        }
+
+        if (savedAccessibility === "on" || savedAccessibility === "off") {
+          accessibility = savedAccessibility;
+        } else if (
+          window.matchMedia &&
+          (
+            window.matchMedia("(prefers-contrast: more)").matches ||
+            window.matchMedia("(forced-colors: active)").matches
+          )
+        ) {
+          accessibility = "on";
+        }
+      } catch (error) {}
+
+      if (theme === "light") {
+        themeColor = "#f7f2ea";
+      }
+
+      document.documentElement.setAttribute("data-theme", theme);
+      document.documentElement.setAttribute("data-accessibility", accessibility);
+      document.querySelector('meta[name="theme-color"]').setAttribute("content", themeColor);
+    })();
+  </script>
+  <link rel="stylesheet" href="./assets/css/main.css?v=20260423-8" />
+  <script src="./assets/js/main.js?v=20260423-7" defer></script>
+</head>
+
+<body data-page="404">
+  <main class="page" aria-label="Страница не найдена">
+    <div class="page-inner">
+      <div class="top-bar">
+        <div class="top-actions">
+          <button class="utility-toggle theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему"
+            title="Переключить тему">
+            <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle class="theme-icon-sun" cx="12" cy="12" r="4"></circle>
+              <g class="theme-icon-rays">
+                <path d="M12 2.5V5"></path>
+                <path d="M12 19V21.5"></path>
+                <path d="M4.9 4.9L6.7 6.7"></path>
+                <path d="M17.3 17.3L19.1 19.1"></path>
+                <path d="M2.5 12H5"></path>
+                <path d="M19 12H21.5"></path>
+                <path d="M4.9 19.1L6.7 17.3"></path>
+                <path d="M17.3 6.7L19.1 4.9"></path>
+              </g>
+              <path class="theme-icon-moon" d="M15.6 3.5a7.6 7.6 0 1 0 4.9 13 8.7 8.7 0 1 1-4.9-13Z"></path>
+            </svg>
+          </button>
+
+          <button class="utility-toggle accessibility-toggle" type="button" data-accessibility-toggle
+            aria-label="Включить режим для слабовидящих" title="Включить режим для слабовидящих">
+            <svg class="accessibility-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2.5 12s3.6-6 9.5-6 9.5 6 9.5 6-3.6 6-9.5 6-9.5-6-9.5-6Z"></path>
+              <circle cx="12" cy="12" r="3.2"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <div class="lang-switch" role="group" aria-label="Language switcher">
+          <button class="lang-button is-active" type="button" data-lang-switch="ru" aria-pressed="true">RU</button>
+          <span class="lang-divider" aria-hidden="true">|</span>
+          <button class="lang-button" type="button" data-lang-switch="en" aria-pressed="false">EN</button>
+        </div>
+      </div>
+
+      <section class="not-found">
+        <p class="not-found-code" data-not-found-code>404</p>
+        <h1 class="not-found-title" data-not-found-title>Страница не найдена</h1>
+        <p class="not-found-text" data-not-found-text>
+          Похоже, здесь пусто. Можно вернуться на главную или открыть Telegram.
+        </p>
+
+        <div class="links not-found-links" aria-label="Ссылки и действия">
+          <a href="/" data-home-link>На главную</a>
+          <a href="https://t.me/iloveQA" target="_blank" rel="noopener noreferrer" data-link-telegram>Телеграм</a>
+        </div>
+      </section>
+
+      <div class="footer-scanline" aria-hidden="true">
+        <span class="footer-scanline-track"></span>
+        <span class="footer-scanline-pulse"></span>
+      </div>
+
+      <footer class="site-footer">
+        <p class="last-updated" data-last-updated>Обновлено 23.04.2026</p>
+        <a class="footer-link" href="https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b"
+          target="_blank" rel="noopener noreferrer" data-footer-wishlist>Вишлист</a>
+      </footer>
+    </div>
+  </main>
+
+  <aside class="qa-easter" data-qa-panel hidden aria-live="polite">
+    <p class="qa-easter-title" data-qa-title>QA mode</p>
+    <pre class="qa-easter-body" data-qa-body></pre>
+  </aside>
+</body>
+
+</html>

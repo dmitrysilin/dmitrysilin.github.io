@@ -1,44 +1,57 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var LAST_UPDATED = "2026-04-22";
-    var LAST_UPDATED_RU = LAST_UPDATED.split("-").reverse().join(".");
+    var LAST_UPDATED = "2026-04-23";
     var SITE_URL = "https://iloveqa.ru/";
-    var API_URL = SITE_URL + "api/about_me.json";
-    var API_ENDPOINT = "./api/about_me.json";
+    var API_PATH = "api/about_me.json";
+    var API_URL = SITE_URL + API_PATH;
+    var API_ENDPOINT = "./" + API_PATH;
+    var pageType = document.body && document.body.getAttribute("data-page") === "404" ? "not-found" : "home";
+    var isLocalFile = window.location && window.location.protocol === "file:";
 
     var languageButtons = document.querySelectorAll("[data-lang-switch]");
     var accessibilityToggle = document.querySelector("[data-accessibility-toggle]");
     var themeToggle = document.querySelector("[data-theme-toggle]");
     var main = document.querySelector(".page");
-    var name = document.querySelector("[data-i18n='name']");
-    var role = document.querySelector("[data-i18n='role']");
     var links = document.querySelector(".links");
-    var telegramLink = document.querySelector("[data-i18n='telegram']");
-    var emailLink = document.querySelector("[data-i18n='email']");
-    var wishlistLink = document.querySelector("[data-i18n='wishlist']");
+    var profileName = document.querySelector("[data-profile-name]");
+    var profileRole = document.querySelector("[data-profile-role]");
+    var telegramLink = document.querySelector("[data-link-telegram]");
+    var emailButton = document.querySelector("[data-copy-email]");
     var shareButton = document.querySelector("[data-share-page]");
-    var stack = document.querySelector("[data-i18n='stack']");
+    var footerWishlist = document.querySelector("[data-footer-wishlist]");
+    var statusRegion = document.querySelector("[data-status-region]");
+    var footerScanline = document.querySelector(".footer-scanline");
+    var stackBlock = document.querySelector("[data-stack-block]");
+    var stackLabel = document.querySelector("[data-i18n='stack_label']");
+    var stackToggleButton = document.querySelector("[data-toggle-stack]");
+    var stackPanel = document.querySelector("[data-stack-panel]");
+    var stackGroups = document.querySelector("[data-stack-groups]");
     var experienceBlock = document.querySelector("[data-experience-block]");
     var experienceLabel = document.querySelector("[data-i18n='experience_label']");
     var experienceToggleButton = document.querySelector("[data-toggle-experience]");
     var experiencePanel = document.querySelector("[data-experience-panel]");
     var experienceList = document.querySelector("[data-experience-list]");
-    var apiBlock = document.querySelector("[data-api-block]");
-    var apiLabel = document.querySelector("[data-i18n='api_label']");
-    var copyButton = document.querySelector("[data-copy-curl]");
-    var toggleButton = document.querySelector("[data-toggle-api]");
-    var runButton = document.querySelector("[data-run-api]");
-    var panel = document.querySelector("[data-api-panel]");
-    var response = document.querySelector("[data-api-response]");
     var projectsBlock = document.querySelector("[data-projects-block]");
     var projectsLabel = document.querySelector("[data-i18n='projects_label']");
     var projectsToggleButton = document.querySelector("[data-toggle-projects]");
     var projectsPanel = document.querySelector("[data-projects-panel]");
-    var projectOne = document.querySelector("[data-i18n='project_one']");
-    var projectTwo = document.querySelector("[data-i18n='project_two']");
-    var lastUpdated = document.querySelector("[data-i18n='last_updated']");
+    var projectsList = document.querySelector("[data-projects-list]");
+    var apiBlock = document.querySelector("[data-api-block]");
+    var apiLabel = document.querySelector("[data-i18n='api_label']");
+    var apiCommand = document.querySelector("[data-api-command]");
+    var copyButton = document.querySelector("[data-copy-curl]");
+    var toggleButton = document.querySelector("[data-toggle-api]");
+    var runButton = document.querySelector("[data-run-api]");
+    var apiPanel = document.querySelector("[data-api-panel]");
+    var response = document.querySelector("[data-api-response]");
+    var lastUpdated = document.querySelector("[data-last-updated]");
+    var notFoundCode = document.querySelector("[data-not-found-code]");
+    var notFoundTitle = document.querySelector("[data-not-found-title]");
+    var notFoundText = document.querySelector("[data-not-found-text]");
+    var homeLink = document.querySelector("[data-home-link]");
     var qaPanel = document.querySelector("[data-qa-panel]");
     var qaTitle = document.querySelector("[data-qa-title]");
     var qaBody = document.querySelector("[data-qa-body]");
+    var embeddedProfileScript = document.querySelector("#profile-data");
     var structuredData = document.querySelector("#structured-data");
     var metaDescription = document.querySelector('meta[name="description"]');
     var themeColor = document.querySelector('meta[name="theme-color"]');
@@ -46,33 +59,74 @@ document.addEventListener("DOMContentLoaded", function () {
     var ogSiteName = document.querySelector('meta[property="og:site_name"]');
     var ogTitle = document.querySelector('meta[property="og:title"]');
     var ogDescription = document.querySelector('meta[property="og:description"]');
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    var ogImageAlt = document.querySelector('meta[property="og:image:alt"]');
+    var twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    var twitterDescription = document.querySelector('meta[name="twitter:description"]');
+    var twitterImageAlt = document.querySelector('meta[name="twitter:image:alt"]');
     var themeMedia = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
     var contrastMedia = window.matchMedia ? window.matchMedia("(prefers-contrast: more)") : null;
     var forcedColorsMedia = window.matchMedia ? window.matchMedia("(forced-colors: active)") : null;
     var touchLikeMedia = window.matchMedia ? window.matchMedia("(hover: none), (pointer: coarse)") : null;
-    var command = "curl " + API_URL;
+    var reducedMotionMedia = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+
     var currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
     var currentAccessibility = document.documentElement.getAttribute("data-accessibility") || "off";
+    var currentLang = "ru";
+    var stackExpanded = false;
     var experienceExpanded = false;
-    var isExpanded = false;
     var projectsExpanded = false;
+    var apiExpanded = false;
     var qaVisible = false;
     var qaSequence = "";
-    var currentLang = "ru";
+    var profileData = null;
+    var profilePromise = null;
+    var statusTimer = 0;
+    var scanlineTimer = 0;
+
     var translations = {
         ru: {
             htmlLang: "ru",
-            documentTitle: "Дмитрий Силин | QA-инженер",
-            metaDescription: "Дмитрий Силин | QA-инженер",
-            ogLocale: "ru_RU",
-            ogSiteName: "Дмитрий Силин",
-            ogTitle: "Дмитрий Силин — QA-инженер",
-            ogDescription: "Дмитрий Силин | QA-инженер",
-            pageLabel: "Личный сайт Дмитрия Силина",
+            pageLabel: {
+                home: "Личный сайт Дмитрия Силина",
+                "not-found": "Страница не найдена"
+            },
             linksLabel: "Ссылки и действия",
-            name: "Дмитрий Силин",
-            roleBase: "QA-инженер",
+            nameFallback: "Дмитрий Силин",
+            roleFallback: "QA-инженер",
+            roleCurrentFallback: "Т-Банке",
             roleJoiner: "в",
+            telegram: "Телеграм",
+            email: "Почта",
+            share: "Поделиться",
+            wishlist: "Вишлист",
+            stackLabel: "Стек",
+            experienceLabel: "Опыт",
+            projectsLabel: "Личные проекты",
+            apiLabel: "GET /api/about_me.json",
+            block: {
+                expand: "Раскрыть",
+                hide: "Скрыть"
+            },
+            api: {
+                copy: "Копировать",
+                run: "Запустить",
+                loading: "Загрузка",
+                fetchError: "Не удалось получить /api/about_me.json"
+            },
+            shareStatus: {
+                shared: "Окно шаринга открыто"
+            },
+            status: {
+                emailCopied: "Почта скопирована",
+                linkCopied: "Ссылка скопирована",
+                curlCopied: "curl скопирован",
+                jsonLoaded: "JSON загружен",
+                copyError: "Не удалось скопировать",
+                shareError: "Не удалось поделиться",
+                jsonError: "Не удалось получить /api/about_me.json"
+            },
+            footerUpdated: "Обновлено",
             theme: {
                 light: "Включить светлую тему",
                 dark: "Включить тёмную тему"
@@ -81,46 +135,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 on: "Включить режим для слабовидящих",
                 off: "Выключить режим для слабовидящих"
             },
-            telegram: "Телеграм",
-            email: "Почта",
-            wishlist: "Вишлист",
-            share: {
-                label: "Поделиться",
-                done: "Готово",
-                copied: "Скопировано",
-                error: "Ошибка"
+            pages: {
+                home: {
+                    description: "Личный сайт Дмитрия Силина",
+                    ogDescription: "Минималистичный личный сайт QA-инженера Дмитрия Силина",
+                    imageAlt: "Превью сайта Дмитрия Силина"
+                },
+                "not-found": {
+                    documentTitle: "404 | Дмитрий Силин",
+                    metaDescription: "Страница не найдена на сайте Дмитрия Силина",
+                    ogTitle: "404 | Дмитрий Силин",
+                    ogDescription: "Страница не найдена",
+                    imageAlt: "404 страница сайта Дмитрия Силина"
+                }
             },
-            stack:
-                "REST, gRPC, GraphQL, SOAP, Kafka, Redis, Oracle, PostgreSQL, Mockingbird, Postman, Insomnia, Swagger, SoapUI, DevTools, DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.",
-            experienceLabel: "Опыт",
-            experience: [
-                { period: "2025 - сейчас", company: "Т-Банк", roleCompany: "Т-Банке" },
-                { period: "2023 - 2025", company: "Росбанк" },
-                { period: "2022 - 2023", company: "X5" }
-            ],
-            apiLabel: "GET /api/about_me.json",
-            projectsLabel: "Пет-проекты",
-            projectOne: "Бот \"Потрачено\"",
-            projectTwo: "Бот \"Что посмотреть\"",
-            lastUpdated: "Обновлено " + LAST_UPDATED_RU,
-            api: {
-                copy: "Копировать",
-                copied: "Скопировано",
-                error: "Ошибка",
-                expand: "Раскрыть",
-                hide: "Скрыть",
-                run: "Запустить",
-                loading: "Загрузка",
-                fetchError: "Не удалось получить /api/about_me.json"
+            notFound: {
+                code: "404",
+                title: "Страница не найдена",
+                text: "Похоже, здесь пусто. Можно вернуться на главную или открыть Telegram.",
+                home: "На главную"
             },
             easter: {
-                title: "Пасхалка",
                 status: "статус",
                 language: "язык",
                 endpoint: "эндпоинт",
                 runtime: "рантайм",
                 updated: "обновлено",
-                wish: "пожелание",
                 hint: "подсказка",
                 ready: "готов",
                 hintValue: "esc чтобы закрыть",
@@ -146,38 +186,50 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Пусть день принесёт маленькую гордость за себя.",
                     "Сегодня всё нужное заметится вовремя."
                 ]
-            },
-            structuredData: {
-                "@context": "https://schema.org",
-                "@type": "Person",
-                name: "Дмитрий Силин",
-                jobTitle: "QA-инженер",
-                url: SITE_URL,
-                address: {
-                    "@type": "PostalAddress",
-                    addressLocality: "Ижевск",
-                    addressCountry: "RU"
-                },
-                email: "mailto:qa.silin@ya.ru",
-                sameAs: [
-                    "https://t.me/iloveQA",
-                    "https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b"
-                ]
             }
         },
         en: {
             htmlLang: "en",
-            documentTitle: "Dmitry Silin | QA engineer",
-            metaDescription: "Dmitry Silin | QA engineer",
-            ogLocale: "en_US",
-            ogSiteName: "Dmitry Silin",
-            ogTitle: "Dmitry Silin — QA engineer",
-            ogDescription: "Dmitry Silin | QA engineer",
-            pageLabel: "Personal website of Dmitry Silin",
+            pageLabel: {
+                home: "Personal website of Dmitry Silin",
+                "not-found": "Page not found"
+            },
             linksLabel: "Links and actions",
-            name: "Dmitry Silin",
-            roleBase: "QA engineer",
+            nameFallback: "Dmitry Silin",
+            roleFallback: "QA engineer",
+            roleCurrentFallback: "T-Bank",
             roleJoiner: "at",
+            telegram: "Telegram",
+            email: "Email",
+            share: "Share",
+            wishlist: "Wishlist",
+            stackLabel: "Stack",
+            experienceLabel: "Experience",
+            projectsLabel: "Personal projects",
+            apiLabel: "GET /api/about_me.json",
+            block: {
+                expand: "Expand",
+                hide: "Hide"
+            },
+            api: {
+                copy: "Copy",
+                run: "Run",
+                loading: "Loading",
+                fetchError: "Unable to fetch /api/about_me.json"
+            },
+            shareStatus: {
+                shared: "Share sheet opened"
+            },
+            status: {
+                emailCopied: "Email copied",
+                linkCopied: "Link copied",
+                curlCopied: "curl copied",
+                jsonLoaded: "JSON loaded",
+                copyError: "Could not copy",
+                shareError: "Could not share",
+                jsonError: "Unable to fetch /api/about_me.json"
+            },
+            footerUpdated: "Updated",
             theme: {
                 light: "Switch to light theme",
                 dark: "Switch to dark theme"
@@ -186,46 +238,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 on: "Enable accessibility mode",
                 off: "Disable accessibility mode"
             },
-            telegram: "Telegram",
-            email: "Email",
-            wishlist: "Wishlist",
-            share: {
-                label: "Share",
-                done: "Shared",
-                copied: "Copied",
-                error: "Error"
+            pages: {
+                home: {
+                    description: "Personal website of Dmitry Silin",
+                    ogDescription: "Minimal personal website of QA engineer Dmitry Silin",
+                    imageAlt: "Preview card of Dmitry Silin's website"
+                },
+                "not-found": {
+                    documentTitle: "404 | Dmitry Silin",
+                    metaDescription: "Page not found on Dmitry Silin's website",
+                    ogTitle: "404 | Dmitry Silin",
+                    ogDescription: "Page not found",
+                    imageAlt: "404 page of Dmitry Silin's website"
+                }
             },
-            stack:
-                "REST, gRPC, GraphQL, SOAP, Kafka, Redis, Oracle, PostgreSQL, Mockingbird, Postman, Insomnia, Swagger, SoapUI, DevTools, DBeaver, PL/SQL Developer, Kafka AKHQ, Kafka UI, Redpanda, Sage, Graylog, Grafana, ELK, Dynatrace, Openshift, Charles, Fiddler.",
-            experienceLabel: "Experience",
-            experience: [
-                { period: "2025 - now", company: "T-Bank", roleCompany: "T-Bank" },
-                { period: "2023 - 2025", company: "Rosbank" },
-                { period: "2022 - 2023", company: "X5" }
-            ],
-            apiLabel: "GET /api/about_me.json",
-            projectsLabel: "Pet projects",
-            projectOne: "Bot \"Потрачено\"",
-            projectTwo: "Bot \"Что посмотреть\"",
-            lastUpdated: "Updated " + LAST_UPDATED,
-            api: {
-                copy: "Copy",
-                copied: "Copied",
-                error: "Error",
-                expand: "Expand",
-                hide: "Hide",
-                run: "Run",
-                loading: "Loading",
-                fetchError: "Unable to fetch /api/about_me.json"
+            notFound: {
+                code: "404",
+                title: "Page not found",
+                text: "Looks like there is nothing here. You can go back home or open Telegram.",
+                home: "Back home"
             },
             easter: {
-                title: "easter egg",
                 status: "status",
                 language: "language",
                 endpoint: "endpoint",
                 runtime: "runtime",
                 updated: "updated",
-                wish: "wish",
                 hint: "hint",
                 ready: "ready",
                 hintValue: "press esc to close",
@@ -250,23 +288,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Your professional style feels reliable.",
                     "May today bring a small moment of pride.",
                     "You will notice the right thing in time today."
-                ]
-            },
-            structuredData: {
-                "@context": "https://schema.org",
-                "@type": "Person",
-                name: "Dmitry Silin",
-                jobTitle: "QA engineer",
-                url: SITE_URL,
-                address: {
-                    "@type": "PostalAddress",
-                    addressLocality: "Izhevsk",
-                    addressCountry: "RU"
-                },
-                email: "mailto:qa.silin@ya.ru",
-                sameAs: [
-                    "https://t.me/iloveQA",
-                    "https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b"
                 ]
             }
         }
@@ -294,6 +315,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         return "ru";
+    }
+
+    function readEmbeddedProfileData() {
+        if (!embeddedProfileScript) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(embeddedProfileScript.textContent);
+        } catch (error) {
+            return null;
+        }
     }
 
     function getSavedLanguage() {
@@ -363,6 +396,57 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             window.localStorage.setItem("site-accessibility", value);
         } catch (error) {}
+    }
+
+    function getLocalizedValue(value, lang) {
+        if (value == null) {
+            return "";
+        }
+
+        if (typeof value === "string") {
+            return value;
+        }
+
+        if (Array.isArray(value)) {
+            return value;
+        }
+
+        if (typeof value === "object") {
+            return value[lang] || value.ru || value.en || "";
+        }
+
+        return String(value);
+    }
+
+    function formatDate(value, lang) {
+        var dateValue = value || LAST_UPDATED;
+
+        if (lang === "ru") {
+            return dateValue.split("-").reverse().join(".");
+        }
+
+        return dateValue;
+    }
+
+    function buildRoleText(text, profile) {
+        var roleBase = profile ? getLocalizedValue(profile.role, currentLang) : text.roleFallback;
+        var currentCompany = text.roleCurrentFallback || "";
+
+        if (profile && Array.isArray(profile.experience) && profile.experience.length > 0) {
+            currentCompany =
+                getLocalizedValue(profile.experience[0].role_company, currentLang) ||
+                getLocalizedValue(profile.experience[0].company, currentLang);
+        }
+
+        return currentCompany ? roleBase + " " + text.roleJoiner + " " + currentCompany : roleBase;
+    }
+
+    function getProfileName(profile, text) {
+        return profile ? getLocalizedValue(profile.name, currentLang) : text.nameFallback;
+    }
+
+    function getProfileUpdatedAt(profile) {
+        return profile && profile.updated_at ? profile.updated_at : LAST_UPDATED;
     }
 
     function updateLanguageButtons() {
@@ -435,28 +519,110 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function getCurrentRoleCompany(text) {
-        if (!text || !Array.isArray(text.experience) || text.experience.length === 0) {
-            return "";
-        }
-
-        return text.experience[0].roleCompany || text.experience[0].company || "";
-    }
-
-    function buildRole(text) {
-        var currentCompany = getCurrentRoleCompany(text);
-        return currentCompany ? text.roleBase + " " + text.roleJoiner + " " + currentCompany : text.roleBase;
-    }
-
-    function renderExperience(text) {
-        if (!experienceLabel || !experienceList) {
+    function clearStatus() {
+        if (!statusRegion) {
             return;
         }
 
-        experienceLabel.textContent = text.experienceLabel;
+        window.clearTimeout(statusTimer);
+        statusRegion.textContent = "";
+        statusRegion.classList.remove("is-visible");
+    }
+
+    function showStatus(message) {
+        if (!statusRegion || !message) {
+            return;
+        }
+
+        window.clearTimeout(statusTimer);
+        statusRegion.textContent = message;
+        statusRegion.classList.add("is-visible");
+        statusTimer = window.setTimeout(clearStatus, 2200);
+    }
+
+    function clearScanlineTimer() {
+        if (!scanlineTimer) {
+            return;
+        }
+
+        window.clearTimeout(scanlineTimer);
+        scanlineTimer = 0;
+    }
+
+    function animateScanline() {
+        if (!footerScanline) {
+            return;
+        }
+
+        clearScanlineTimer();
+
+        if (reducedMotionMedia && reducedMotionMedia.matches) {
+            footerScanline.style.setProperty("--scan-left", "38%");
+            footerScanline.style.setProperty("--scan-width", "22%");
+            footerScanline.style.setProperty("--scan-opacity", "0.4");
+            footerScanline.style.setProperty("--scan-duration", "0ms");
+            return;
+        }
+
+        function movePulse() {
+            var width = 12 + Math.random() * 34;
+            var left = -8 + Math.random() * 104;
+            var opacity = 0.18 + Math.random() * 0.68;
+            var duration = 720 + Math.floor(Math.random() * 2100);
+
+            footerScanline.style.setProperty("--scan-left", left.toFixed(2) + "%");
+            footerScanline.style.setProperty("--scan-width", width.toFixed(2) + "%");
+            footerScanline.style.setProperty("--scan-opacity", opacity.toFixed(2));
+            footerScanline.style.setProperty("--scan-duration", duration + "ms");
+
+            scanlineTimer = window.setTimeout(movePulse, Math.max(260, Math.round(duration * (0.45 + Math.random() * 0.5))));
+        }
+
+        movePulse();
+    }
+
+    function updateLastUpdated(profile) {
+        if (!lastUpdated) {
+            return;
+        }
+
+        lastUpdated.textContent =
+            translations[currentLang].footerUpdated + " " + formatDate(getProfileUpdatedAt(profile), currentLang);
+    }
+
+    function renderStackGroups(profile) {
+        if (!stackGroups || !profile || !Array.isArray(profile.stack_groups)) {
+            return;
+        }
+
+        stackGroups.replaceChildren();
+
+        profile.stack_groups.forEach(function (group) {
+            var groupElement = document.createElement("article");
+            var label = document.createElement("p");
+            var items = document.createElement("p");
+
+            groupElement.className = "stack-group";
+            label.className = "stack-group-label";
+            items.className = "stack-group-items";
+
+            label.textContent = getLocalizedValue(group.label, currentLang);
+            items.textContent = Array.isArray(group.items) ? group.items.join(", ") : "";
+
+            groupElement.appendChild(label);
+            groupElement.appendChild(items);
+            stackGroups.appendChild(groupElement);
+        });
+    }
+
+    function renderExperience(profile) {
+        if (!experienceList || !profile || !Array.isArray(profile.experience)) {
+            return;
+        }
+
         experienceList.replaceChildren();
 
-        text.experience.forEach(function (item) {
+        profile.experience.forEach(function (item) {
             var listItem = document.createElement("li");
             var period = document.createElement("span");
             var company = document.createElement("span");
@@ -465,8 +631,8 @@ document.addEventListener("DOMContentLoaded", function () {
             period.className = "experience-period";
             company.className = "experience-company";
 
-            period.textContent = item.period;
-            company.textContent = item.company;
+            period.textContent = getLocalizedValue(item.period, currentLang);
+            company.textContent = getLocalizedValue(item.company, currentLang);
 
             listItem.appendChild(period);
             listItem.appendChild(company);
@@ -474,16 +640,253 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function syncExperienceState() {
-        if (!experienceBlock || !experienceToggleButton || !experiencePanel) {
+    function renderProjects(profile) {
+        if (!projectsList || !profile || !Array.isArray(profile.projects)) {
             return;
         }
 
-        var text = translations[currentLang].api;
-        experienceBlock.dataset.expanded = experienceExpanded ? "true" : "false";
-        experienceToggleButton.textContent = experienceExpanded ? text.hide : text.expand;
-        experienceToggleButton.setAttribute("aria-expanded", experienceExpanded ? "true" : "false");
-        experiencePanel.hidden = !experienceExpanded;
+        projectsList.replaceChildren();
+
+        profile.projects.forEach(function (project) {
+            var listItem = document.createElement("li");
+            var link = document.createElement("a");
+
+            link.className = "project-link";
+            link.href = project.url || "#";
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = getLocalizedValue(project.title, currentLang);
+
+            listItem.appendChild(link);
+            projectsList.appendChild(listItem);
+        });
+    }
+
+    function updateStructuredData(profile) {
+        if (!structuredData || !profile) {
+            return;
+        }
+
+        var structured = {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: getLocalizedValue(profile.name, currentLang),
+            jobTitle: getLocalizedValue(profile.role, currentLang),
+            url: SITE_URL,
+            address: {
+                "@type": "PostalAddress",
+                addressLocality: getLocalizedValue(profile.city, currentLang),
+                addressCountry: profile.country_code || "RU"
+            },
+            email: profile.contacts ? profile.contacts.email : "",
+            sameAs: profile.contacts
+                ? [profile.contacts.telegram, profile.contacts.wishlist].filter(Boolean)
+                : []
+        };
+
+        structuredData.textContent = JSON.stringify(structured, null, 2);
+    }
+
+    function updateHeadText(text) {
+        var nameText = getProfileName(profileData, text);
+        var roleText = buildRoleText(text, profileData);
+        var pageMeta;
+
+        if (pageType === "not-found") {
+            pageMeta = text.pages["not-found"];
+        } else {
+            pageMeta = {
+                documentTitle: nameText + " | " + roleText,
+                metaDescription: text.pages.home.description,
+                ogTitle: nameText + " — " + roleText,
+                ogDescription: text.pages.home.ogDescription,
+                imageAlt: text.pages.home.imageAlt
+            };
+        }
+
+        document.documentElement.lang = text.htmlLang;
+        document.title = pageMeta.documentTitle;
+
+        if (metaDescription) {
+            metaDescription.setAttribute("content", pageMeta.metaDescription);
+        }
+
+        if (ogLocale) {
+            ogLocale.setAttribute("content", currentLang === "ru" ? "ru_RU" : "en_US");
+        }
+
+        if (ogSiteName) {
+            ogSiteName.setAttribute("content", nameText);
+        }
+
+        if (ogTitle) {
+            ogTitle.setAttribute("content", pageMeta.ogTitle);
+        }
+
+        if (ogDescription) {
+            ogDescription.setAttribute("content", pageMeta.ogDescription);
+        }
+
+        if (ogUrl) {
+            ogUrl.setAttribute("content", window.location.href);
+        }
+
+        if (ogImageAlt) {
+            ogImageAlt.setAttribute("content", pageMeta.imageAlt);
+        }
+
+        if (twitterTitle) {
+            twitterTitle.setAttribute("content", pageMeta.ogTitle);
+        }
+
+        if (twitterDescription) {
+            twitterDescription.setAttribute("content", pageMeta.ogDescription);
+        }
+
+        if (twitterImageAlt) {
+            twitterImageAlt.setAttribute("content", pageMeta.imageAlt);
+        }
+    }
+
+    function syncDetailState(block, button, panel, expanded) {
+        if (!block || !button || !panel) {
+            return;
+        }
+
+        var text = translations[currentLang].block;
+        var prefix = expanded ? "− " : "+ ";
+
+        block.dataset.expanded = expanded ? "true" : "false";
+        button.textContent = prefix + (expanded ? text.hide : text.expand);
+        button.setAttribute("aria-expanded", expanded ? "true" : "false");
+        panel.hidden = !expanded;
+    }
+
+    function syncExperienceState() {
+        syncDetailState(experienceBlock, experienceToggleButton, experiencePanel, experienceExpanded);
+    }
+
+    function syncStackState() {
+        syncDetailState(stackBlock, stackToggleButton, stackPanel, stackExpanded);
+    }
+
+    function syncProjectsState() {
+        syncDetailState(projectsBlock, projectsToggleButton, projectsPanel, projectsExpanded);
+    }
+
+    function syncApiState() {
+        syncDetailState(apiBlock, toggleButton, apiPanel, apiExpanded);
+
+        if (runButton) {
+            runButton.hidden = !apiExpanded;
+            runButton.textContent = translations[currentLang].api.run;
+        }
+    }
+
+    function renderNotFound(text) {
+        if (notFoundCode) {
+            notFoundCode.textContent = text.notFound.code;
+        }
+
+        if (notFoundTitle) {
+            notFoundTitle.textContent = text.notFound.title;
+        }
+
+        if (notFoundText) {
+            notFoundText.textContent = text.notFound.text;
+        }
+
+        if (homeLink) {
+            homeLink.textContent = text.notFound.home;
+        }
+    }
+
+    function renderProfile(text) {
+        if (profileName) {
+            profileName.textContent = getProfileName(profileData, text);
+        }
+
+        if (profileRole) {
+            profileRole.textContent = buildRoleText(text, profileData);
+        }
+
+        if (telegramLink) {
+            telegramLink.textContent = text.telegram;
+            telegramLink.href = profileData && profileData.contacts ? profileData.contacts.telegram : "https://t.me/iloveQA";
+        }
+
+        if (emailButton) {
+            emailButton.textContent = text.email;
+        }
+
+        if (shareButton) {
+            shareButton.textContent = text.share;
+        }
+
+        if (footerWishlist) {
+            footerWishlist.textContent = text.wishlist;
+            footerWishlist.href =
+                profileData && profileData.contacts
+                    ? profileData.contacts.wishlist
+                    : "https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b";
+        }
+
+        if (stackLabel) {
+            stackLabel.textContent = text.stackLabel;
+        }
+
+        if (experienceLabel) {
+            experienceLabel.textContent = text.experienceLabel;
+        }
+
+        if (projectsLabel) {
+            projectsLabel.textContent = text.projectsLabel;
+        }
+
+        if (apiLabel) {
+            apiLabel.textContent = text.apiLabel;
+        }
+
+        if (copyButton) {
+            copyButton.textContent = text.api.copy;
+        }
+
+        if (apiCommand) {
+            apiCommand.textContent = "curl " + API_URL;
+        }
+
+        updateLastUpdated(profileData);
+        renderStackGroups(profileData);
+        renderExperience(profileData);
+        renderProjects(profileData);
+        updateStructuredData(profileData);
+        renderNotFound(text);
+    }
+
+    function applyLanguage(lang) {
+        var text = translations[lang];
+        currentLang = lang;
+
+        if (main) {
+            main.setAttribute("aria-label", text.pageLabel[pageType]);
+        }
+
+        if (links) {
+            links.setAttribute("aria-label", text.linksLabel);
+        }
+
+        clearStatus();
+        updateHeadText(text);
+        renderProfile(text);
+        updateLanguageButtons();
+        updateThemeToggle();
+        updateAccessibilityToggle();
+        syncStackState();
+        syncExperienceState();
+        syncProjectsState();
+        syncApiState();
+        renderQaPanel();
+        saveLanguage(lang);
     }
 
     function getDailyMessage(messages) {
@@ -509,13 +912,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var text = translations[currentLang].easter;
         var message = getDailyMessage(text.messages);
+
         qaTitle.textContent = message;
         qaBody.textContent = [
             text.status + ": " + text.ready,
             text.language + ": " + currentLang.toUpperCase(),
             text.endpoint + ": /api/about_me.json",
             text.runtime + ": GitHub Pages",
-            text.updated + ": " + (currentLang === "ru" ? LAST_UPDATED_RU : LAST_UPDATED),
+            text.updated + ": " + formatDate(getProfileUpdatedAt(profileData), currentLang),
             text.hint + ": " + text.hintValue
         ].join("\n");
     }
@@ -533,197 +937,146 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function applyLanguage(lang) {
-        var text = translations[lang];
-        currentLang = lang;
-
-        document.documentElement.lang = text.htmlLang;
-        document.title = text.documentTitle;
-
-        if (metaDescription) {
-            metaDescription.setAttribute("content", text.metaDescription);
+    function copyText(value) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(value);
         }
 
-        if (ogLocale) {
-            ogLocale.setAttribute("content", text.ogLocale);
-        }
+        return new Promise(function (resolve, reject) {
+            var textarea = document.createElement("textarea");
+            textarea.value = value;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "absolute";
+            textarea.style.left = "-9999px";
+            document.body.appendChild(textarea);
+            textarea.select();
 
-        if (ogSiteName) {
-            ogSiteName.setAttribute("content", text.ogSiteName);
-        }
+            try {
+                var success = document.execCommand("copy");
+                document.body.removeChild(textarea);
 
-        if (ogTitle) {
-            ogTitle.setAttribute("content", text.ogTitle);
-        }
+                if (success) {
+                    resolve();
+                    return;
+                }
+            } catch (error) {
+                document.body.removeChild(textarea);
+                reject(error);
+                return;
+            }
 
-        if (ogDescription) {
-            ogDescription.setAttribute("content", text.ogDescription);
-        }
-
-        if (structuredData) {
-            structuredData.textContent = JSON.stringify(text.structuredData, null, 2);
-        }
-
-        if (main) {
-            main.setAttribute("aria-label", text.pageLabel);
-        }
-
-        if (links) {
-            links.setAttribute("aria-label", text.linksLabel);
-        }
-
-        if (name) {
-            name.textContent = text.name;
-        }
-
-        if (role) {
-            role.textContent = buildRole(text);
-        }
-
-        if (telegramLink) {
-            telegramLink.textContent = text.telegram;
-        }
-
-        if (emailLink) {
-            emailLink.textContent = text.email;
-        }
-
-        if (wishlistLink) {
-            wishlistLink.textContent = text.wishlist;
-        }
-
-        if (shareButton) {
-            shareButton.textContent = text.share.label;
-        }
-
-        if (stack) {
-            stack.textContent = text.stack;
-        }
-
-        renderExperience(text);
-
-        if (apiLabel) {
-            apiLabel.textContent = text.apiLabel;
-        }
-
-        if (projectsLabel) {
-            projectsLabel.textContent = text.projectsLabel;
-        }
-
-        if (projectOne) {
-            projectOne.textContent = text.projectOne;
-        }
-
-        if (projectTwo) {
-            projectTwo.textContent = text.projectTwo;
-        }
-
-        if (lastUpdated) {
-            lastUpdated.textContent = text.lastUpdated;
-        }
-
-        if (response && response.dataset.state === "error" && !response.hidden) {
-            response.textContent = JSON.stringify(
-                {
-                    error: text.api.fetchError
-                },
-                null,
-                2
-            );
-        }
-
-        if (qaVisible) {
-            renderQaPanel();
-        }
-
-        updateLanguageButtons();
-        updateThemeToggle();
-        updateAccessibilityToggle();
-        syncExperienceState();
-        syncApiState();
-        syncProjectsState();
-        saveLanguage(lang);
+            reject(new Error("Copy failed"));
+        });
     }
 
-    function syncApiState() {
-        if (!apiBlock || !copyButton || !toggleButton || !runButton || !panel) {
-            return;
+    function requestProfile(forceFresh) {
+        if (isLocalFile && profileData) {
+            return Promise.resolve(profileData);
         }
 
-        var text = translations[currentLang].api;
-        apiBlock.dataset.expanded = isExpanded ? "true" : "false";
-        copyButton.textContent = text.copy;
-        toggleButton.textContent = isExpanded ? text.hide : text.expand;
-        toggleButton.setAttribute("aria-expanded", isExpanded ? "true" : "false");
-        runButton.hidden = !isExpanded;
-        panel.hidden = !isExpanded;
-        runButton.textContent = text.run;
-    }
-
-    function syncProjectsState() {
-        if (!projectsBlock || !projectsToggleButton || !projectsPanel) {
-            return;
+        if (profilePromise && !forceFresh) {
+            return profilePromise;
         }
 
-        var text = translations[currentLang].api;
-        projectsBlock.dataset.expanded = projectsExpanded ? "true" : "false";
-        projectsToggleButton.textContent = projectsExpanded ? text.hide : text.expand;
-        projectsToggleButton.setAttribute("aria-expanded", projectsExpanded ? "true" : "false");
-        projectsPanel.hidden = !projectsExpanded;
+        profilePromise = fetch(API_ENDPOINT, {
+            headers: {
+                Accept: "application/json"
+            }
+        })
+            .then(function (result) {
+                if (!result.ok) {
+                    throw new Error("Request failed");
+                }
+
+                return result.json();
+            })
+            .then(function (data) {
+                profileData = data;
+                return data;
+            }, function (error) {
+                profilePromise = null;
+
+                if (profileData) {
+                    return profileData;
+                }
+
+                throw error;
+            });
+
+        return profilePromise;
     }
 
     currentLang = getSavedLanguage();
+    profileData = readEmbeddedProfileData();
     currentTheme = getSavedTheme() || currentTheme || detectSystemTheme();
     currentAccessibility = getSavedAccessibility() || currentAccessibility || detectSystemAccessibility();
     applyTheme(currentTheme, false);
     applyAccessibility(currentAccessibility, false);
+    animateScanline();
     applyLanguage(currentLang);
 
+    requestProfile(false)
+        .then(function () {
+            applyLanguage(currentLang);
+        }, function () {});
+
     if (copyButton) {
-        copyButton.addEventListener("click", async function () {
-            var text = translations[currentLang].api;
+        copyButton.addEventListener("click", function () {
+            copyText("curl " + API_URL)
+                .then(function () {
+                    showStatus(translations[currentLang].status.curlCopied);
+                }, function () {
+                    showStatus(translations[currentLang].status.copyError);
+                });
+        });
+    }
 
-            try {
-                await navigator.clipboard.writeText(command);
-                copyButton.textContent = text.copied;
-            } catch (error) {
-                copyButton.textContent = text.error;
-            }
+    if (emailButton) {
+        emailButton.addEventListener("click", function () {
+            var email =
+                profileData && profileData.contacts && profileData.contacts.email
+                    ? profileData.contacts.email
+                    : "qa.silin@ya.ru";
 
-            setTimeout(function () {
-                copyButton.textContent = translations[currentLang].api.copy;
-            }, 1200);
+            copyText(email)
+                .then(function () {
+                    showStatus(translations[currentLang].status.emailCopied);
+                }, function () {
+                    showStatus(translations[currentLang].status.copyError);
+                });
         });
     }
 
     if (shareButton) {
-        shareButton.addEventListener("click", async function () {
-            var text = translations[currentLang].share;
+        shareButton.addEventListener("click", function () {
+            var text = translations[currentLang];
 
-            try {
-                if (navigator.share) {
-                    await navigator.share({
-                        title: translations[currentLang].documentTitle,
-                        text: translations[currentLang].metaDescription,
+            if (navigator.share) {
+                navigator
+                    .share({
+                        title: document.title,
+                        text: metaDescription ? metaDescription.getAttribute("content") : "",
                         url: SITE_URL
-                    });
-                    shareButton.textContent = text.done;
-                } else {
-                    await navigator.clipboard.writeText(SITE_URL);
-                    shareButton.textContent = text.copied;
-                }
-            } catch (error) {
-                if (error && error.name === "AbortError") {
-                    shareButton.textContent = text.label;
-                    return;
-                }
+                    })
+                    .then(function () {
+                        showStatus(text.shareStatus.shared);
+                    }, function (error) {
+                        if (error && error.name === "AbortError") {
+                            return;
+                        }
 
-                shareButton.textContent = text.error;
+                        showStatus(text.status.shareError);
+                    });
+
+                return;
             }
 
-            setTimeout(function () {
-                shareButton.textContent = translations[currentLang].share.label;
-            }, 1200);
+            copyText(SITE_URL)
+                .then(function () {
+                    showStatus(text.status.linkCopied);
+                }, function () {
+                    showStatus(text.status.shareError);
+                });
         });
     }
 
@@ -793,6 +1146,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    if (reducedMotionMedia) {
+        var handleReducedMotionChange = function () {
+            animateScanline();
+        };
+
+        if (typeof reducedMotionMedia.addEventListener === "function") {
+            reducedMotionMedia.addEventListener("change", handleReducedMotionChange);
+        } else if (typeof reducedMotionMedia.addListener === "function") {
+            reducedMotionMedia.addListener(handleReducedMotionChange);
+        }
+    }
+
     if (experienceToggleButton) {
         experienceToggleButton.addEventListener("click", function () {
             experienceExpanded = !experienceExpanded;
@@ -800,10 +1165,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    if (toggleButton) {
-        toggleButton.addEventListener("click", function () {
-            isExpanded = !isExpanded;
-            syncApiState();
+    if (stackToggleButton) {
+        stackToggleButton.addEventListener("click", function () {
+            stackExpanded = !stackExpanded;
+            syncStackState();
         });
     }
 
@@ -814,41 +1179,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    if (toggleButton) {
+        toggleButton.addEventListener("click", function () {
+            apiExpanded = !apiExpanded;
+            syncApiState();
+        });
+    }
+
     if (runButton && response) {
-        runButton.addEventListener("click", async function () {
-            var text = translations[currentLang].api;
+        runButton.addEventListener("click", function () {
             runButton.disabled = true;
-            runButton.textContent = text.loading;
+            runButton.textContent = translations[currentLang].api.loading;
 
-            try {
-                var result = await fetch(API_ENDPOINT, {
-                    headers: {
-                        Accept: "application/json"
-                    }
+            requestProfile(true)
+                .then(function (data) {
+                    response.hidden = false;
+                    response.textContent = JSON.stringify(data, null, 2);
+                    showStatus(translations[currentLang].status.jsonLoaded);
+                    applyLanguage(currentLang);
+                }, function () {
+                    response.hidden = false;
+                    response.textContent = JSON.stringify(
+                        {
+                            error: translations[currentLang].api.fetchError
+                        },
+                        null,
+                        2
+                    );
+                    showStatus(translations[currentLang].status.jsonError);
+                })
+                .then(function () {
+                    runButton.disabled = false;
+                    runButton.textContent = translations[currentLang].api.run;
                 });
-
-                if (!result.ok) {
-                    throw new Error("Request failed");
-                }
-
-                var data = await result.json();
-                response.hidden = false;
-                response.dataset.state = "success";
-                response.textContent = JSON.stringify(data, null, 2);
-            } catch (error) {
-                response.hidden = false;
-                response.dataset.state = "error";
-                response.textContent = JSON.stringify(
-                    {
-                        error: text.fetchError
-                    },
-                    null,
-                    2
-                );
-            } finally {
-                runButton.disabled = false;
-                runButton.textContent = translations[currentLang].api.run;
-            }
         });
     }
 

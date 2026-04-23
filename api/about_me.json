@@ -1,43 +1,132 @@
 {
-  "name": "Дмитрий Силин",
-  "role": "QA engineer",
-  "location": "Izhevsk, Russia",
-  "summary": "QA engineer focused on backend services, integrations and release quality.",
-  "stack": [
-    "REST",
-    "gRPC",
-    "GraphQL",
-    "SOAP",
-    "Kafka",
-    "Redis",
-    "Oracle",
-    "PostgreSQL"
-  ],
-  "tools": [
-    "Mockingbird",
-    "Postman",
-    "Insomnia",
-    "Swagger",
-    "SoapUI",
-    "DevTools",
-    "DBeaver",
-    "PL/SQL Developer",
-    "Kafka AKHQ",
-    "Kafka UI",
-    "Redpanda",
-    "Sage",
-    "Graylog",
-    "Grafana",
-    "ELK",
-    "Dynatrace",
-    "Openshift",
-    "Charles",
-    "Fiddler"
-  ],
+  "name": {
+    "ru": "Дмитрий Силин",
+    "en": "Dmitry Silin"
+  },
+  "role": {
+    "ru": "QA-инженер",
+    "en": "QA engineer"
+  },
+  "city": {
+    "ru": "Ижевск",
+    "en": "Izhevsk"
+  },
+  "location": {
+    "ru": "Ижевск, Россия",
+    "en": "Izhevsk, Russia"
+  },
+  "country_code": "RU",
+  "summary": {
+    "ru": "QA-инженер, который работает с API, интеграциями, логами, релизами и аккуратными процессами.",
+    "en": "QA engineer working with APIs, integrations, logs, releases and clean processes."
+  },
   "contacts": {
     "telegram": "https://t.me/iloveQA",
     "email": "qa.silin@ya.ru",
     "wishlist": "https://buildin.ai/share/7a50c95d-e784-407c-985e-efef949e534b#8b2dbb4d-b0ec-4b53-918e-034baf79118b"
   },
-  "updated_at": "2026-04-20"
+  "stack_groups": [
+    {
+      "label": {
+        "ru": "API",
+        "en": "API"
+      },
+      "items": ["REST", "gRPC", "GraphQL", "SOAP"]
+    },
+    {
+      "label": {
+        "ru": "Базы данных и кэш",
+        "en": "Databases & cache"
+      },
+      "items": ["Oracle", "PostgreSQL", "Redis"]
+    },
+    {
+      "label": {
+        "ru": "Очереди и Kafka tools",
+        "en": "Messaging & Kafka tools"
+      },
+      "items": ["Kafka", "Kafka AKHQ", "Kafka UI", "Redpanda"]
+    },
+    {
+      "label": {
+        "ru": "API tools",
+        "en": "API tools"
+      },
+      "items": ["Mockingbird", "Postman", "Insomnia", "Swagger", "SoapUI"]
+    },
+    {
+      "label": {
+        "ru": "Отладка и данные",
+        "en": "Debug & data"
+      },
+      "items": ["DevTools", "DBeaver", "PL/SQL Developer", "Charles", "Fiddler"]
+    },
+    {
+      "label": {
+        "ru": "Логи и мониторинг",
+        "en": "Logs & monitoring"
+      },
+      "items": ["Graylog", "Grafana", "ELK", "Dynatrace", "Sage"]
+    },
+    {
+      "label": {
+        "ru": "Платформа",
+        "en": "Platform"
+      },
+      "items": ["Openshift"]
+    }
+  ],
+  "experience": [
+    {
+      "period": {
+        "ru": "2025 - сейчас",
+        "en": "2025 - now"
+      },
+      "company": {
+        "ru": "Т-Банк",
+        "en": "T-Bank"
+      },
+      "role_company": {
+        "ru": "Т-Банке",
+        "en": "T-Bank"
+      }
+    },
+    {
+      "period": {
+        "ru": "2023 - 2025",
+        "en": "2023 - 2025"
+      },
+      "company": {
+        "ru": "Росбанк",
+        "en": "Rosbank"
+      }
+    },
+    {
+      "period": {
+        "ru": "2022 - 2023",
+        "en": "2022 - 2023"
+      },
+      "company": {
+        "ru": "X5",
+        "en": "X5"
+      }
+    }
+  ],
+  "projects": [
+    {
+      "title": {
+        "ru": "Бот \"Потрачено\"",
+        "en": "Bot \"Potracheno\""
+      },
+      "url": "https://t.me/potracheno_fin_bot"
+    },
+    {
+      "title": {
+        "ru": "Бот \"Что посмотреть\"",
+        "en": "Bot \"What to watch\""
+      },
+      "url": "https://t.me/kinopoisk_search_bot"
+    }
+  ],
+  "updated_at": "2026-04-23"
 }
