@@ -1,5 +1,5 @@
 :root {
-    --content-width: 48rem;
+    --content-width: 46rem;
     --bg: #0a0a0a;
     --bg-top: #0b0b0b;
     --bg-bottom: #090909;
@@ -149,6 +149,10 @@ body[data-page="404"] .page {
 
 .page-inner {
     width: min(var(--content-width), 100%);
+}
+
+.page-inner > * {
+    min-width: 0;
 }
 
 .top-bar {
@@ -371,20 +375,20 @@ h1 {
 
 .intro-block {
     width: 100%;
-    max-width: none;
+    max-width: 44.25rem;
     margin-top: 6px;
 }
 
 .intro-text {
     display: grid;
-    gap: 8px;
+    gap: 10px;
 }
 
 .intro-paragraph {
     margin: 0;
     color: var(--block-muted);
     font-size: var(--text-md);
-    line-height: 1.5;
+    line-height: 1.58;
 }
 
 .detail-list {
@@ -454,6 +458,7 @@ h1 {
     color: var(--block-muted);
     font-size: var(--text-sm);
     line-height: 1.66;
+    overflow-wrap: anywhere;
 }
 
 .detail-head {
@@ -643,10 +648,13 @@ h1 {
 
 .not-found-title {
     margin: 0;
-    max-width: min(100%, 48rem);
+    max-width: min(100%, var(--content-width));
     font-size: clamp(2.2rem, 7vw, 4.9rem);
     line-height: 0.96;
     letter-spacing: -0.05em;
+    white-space: normal;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
 }
 
 .not-found-text {
@@ -715,6 +723,10 @@ html[data-accessibility="on"] .links {
     gap: 14px 18px;
 }
 
+html[data-accessibility="on"] .intro-block {
+    max-width: none;
+}
+
 html[data-accessibility="on"] .detail-block[data-expanded="true"] .detail-panel,
 html[data-accessibility="on"] .stack-group + .stack-group,
 html[data-accessibility="on"] .experience-item + .experience-item,
@@ -747,6 +759,17 @@ html[data-accessibility="on"] :focus-visible {
         margin-bottom: 26px;
     }
 
+    .top-bar,
+    .hero,
+    .links,
+    .intro-block,
+    .detail-list,
+    .site-footer,
+    .not-found {
+        width: 100%;
+        min-width: 0;
+    }
+
     h1 {
         font-size: clamp(2.35rem, 10.2vw, 4.55rem);
     }
@@ -762,11 +785,11 @@ html[data-accessibility="on"] :focus-visible {
     }
 
     .intro-text {
-        gap: 8px;
+        gap: 9px;
     }
 
     .intro-paragraph {
-        line-height: 1.54;
+        line-height: 1.62;
     }
 
     .stack-group {
