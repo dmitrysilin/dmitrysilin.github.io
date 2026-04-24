@@ -752,7 +752,7 @@ html[data-accessibility="on"] :focus-visible {
 @media (max-width: 640px) {
     .page {
         align-items: flex-start;
-        padding: 56px 20px 40px;
+        padding: 56px 20px max(40px, calc(env(safe-area-inset-bottom, 0px) + 20px));
     }
 
     .top-bar {
@@ -807,8 +807,17 @@ html[data-accessibility="on"] :focus-visible {
     }
 
     .site-footer {
-        flex-wrap: wrap;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-items: start;
+        gap: 8px;
+        margin-top: 24px;
+        align-items: start;
+    }
+
+    .last-updated,
+    .footer-link {
+        letter-spacing: 0.02em;
     }
 
     .qa-easter {
