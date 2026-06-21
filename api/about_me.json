@@ -112,21 +112,5 @@
       }
     }
   ],
-  "projects": [
-    {
-      "title": {
-        "ru": "Бот \"Потрачено\"",
-        "en": "Bot \"Potracheno\""
-      },
-      "url": "https://t.me/potracheno_fin_bot"
-    },
-    {
-      "title": {
-        "ru": "Бот \"Что посмотреть\"",
-        "en": "Bot \"What to watch\""
-      },
-      "url": "https://t.me/kinopoisk_search_bot"
-    }
-  ],
   "updated_at": "2026-04-23"
 }

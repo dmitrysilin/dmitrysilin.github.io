@@ -520,8 +520,7 @@ h1 {
     display: none;
 }
 
-.experience-list,
-.projects-list {
+.experience-list {
     display: grid;
     gap: 6px;
     margin: 0;
@@ -537,8 +536,7 @@ h1 {
     line-height: 1.34;
 }
 
-.experience-item + .experience-item,
-.projects-list li + li {
+.experience-item + .experience-item {
     margin-top: 8px;
     padding-top: 8px;
     border-top: 1px solid color-mix(in srgb, var(--line) 78%, transparent);
@@ -556,16 +554,6 @@ h1 {
     font-size: var(--text-md);
     color: var(--text);
     line-height: 1.34;
-}
-
-.project-link {
-    display: inline-block;
-    color: var(--text);
-}
-
-.project-link:hover,
-.project-link:focus-visible {
-    color: var(--text);
 }
 
 .site-footer {
@@ -676,8 +664,7 @@ h1 {
 html[data-accessibility="on"] .links a,
 html[data-accessibility="on"] .links button,
 html[data-accessibility="on"] .footer-link,
-html[data-accessibility="on"] .experience-company,
-html[data-accessibility="on"] .project-link {
+html[data-accessibility="on"] .experience-company {
     font-weight: 600;
 }
 
@@ -729,8 +716,7 @@ html[data-accessibility="on"] .intro-block {
 
 html[data-accessibility="on"] .detail-block[data-expanded="true"] .detail-panel,
 html[data-accessibility="on"] .stack-group + .stack-group,
-html[data-accessibility="on"] .experience-item + .experience-item,
-html[data-accessibility="on"] .projects-list li + li {
+html[data-accessibility="on"] .experience-item + .experience-item {
     border-top-width: 2px;
 }
 

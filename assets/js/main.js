@@ -28,11 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var experienceToggleButton = document.querySelector("[data-toggle-experience]");
     var experiencePanel = document.querySelector("[data-experience-panel]");
     var experienceList = document.querySelector("[data-experience-list]");
-    var projectsBlock = document.querySelector("[data-projects-block]");
-    var projectsLabel = document.querySelector("[data-i18n='projects_label']");
-    var projectsToggleButton = document.querySelector("[data-toggle-projects]");
-    var projectsPanel = document.querySelector("[data-projects-panel]");
-    var projectsList = document.querySelector("[data-projects-list]");
     var detailHeads = document.querySelectorAll(".detail-head");
     var lastUpdated = document.querySelector("[data-last-updated]");
     var notFoundCode = document.querySelector("[data-not-found-code]");
@@ -65,7 +60,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var currentLang = "ru";
     var stackExpanded = false;
     var experienceExpanded = false;
-    var projectsExpanded = false;
     var qaVisible = false;
     var qaSequence = "";
     var profileData = null;
@@ -90,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function () {
             wishlist: "Вишлист",
             stackLabel: "Стек",
             experienceLabel: "Опыт",
-            projectsLabel: "Личные проекты",
             block: {
                 expand: "Раскрыть",
                 hide: "Скрыть"
@@ -183,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
             wishlist: "Wishlist",
             stackLabel: "Stack",
             experienceLabel: "Experience",
-            projectsLabel: "Personal projects",
             block: {
                 expand: "Expand",
                 hide: "Hide"
@@ -590,28 +582,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function renderProjects(profile) {
-        if (!projectsList || !profile || !Array.isArray(profile.projects)) {
-            return;
-        }
-
-        projectsList.replaceChildren();
-
-        profile.projects.forEach(function (project) {
-            var listItem = document.createElement("li");
-            var link = document.createElement("a");
-
-            link.className = "project-link";
-            link.href = project.url || "#";
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-            link.textContent = getLocalizedValue(project.title, currentLang);
-
-            listItem.appendChild(link);
-            projectsList.appendChild(listItem);
-        });
-    }
-
     function updateStructuredData(profile) {
         if (!structuredData || !profile) {
             return;
@@ -722,10 +692,6 @@ document.addEventListener("DOMContentLoaded", function () {
         syncDetailState(stackBlock, stackToggleButton, stackPanel, stackExpanded);
     }
 
-    function syncProjectsState() {
-        syncDetailState(projectsBlock, projectsToggleButton, projectsPanel, projectsExpanded);
-    }
-
     function renderNotFound(text) {
         if (notFoundCode) {
             notFoundCode.textContent = text.notFound.code;
@@ -784,14 +750,9 @@ document.addEventListener("DOMContentLoaded", function () {
             experienceLabel.textContent = text.experienceLabel;
         }
 
-        if (projectsLabel) {
-            projectsLabel.textContent = text.projectsLabel;
-        }
-
         updateLastUpdated(profileData);
         renderStackGroups(profileData);
         renderExperience(profileData);
-        renderProjects(profileData);
         updateStructuredData(profileData);
         renderNotFound(text);
     }
@@ -816,7 +777,6 @@ document.addEventListener("DOMContentLoaded", function () {
         updateAccessibilityToggle();
         syncStackState();
         syncExperienceState();
-        syncProjectsState();
         renderQaPanel();
         saveLanguage(lang);
     }
@@ -1077,13 +1037,6 @@ document.addEventListener("DOMContentLoaded", function () {
         stackToggleButton.addEventListener("click", function () {
             stackExpanded = !stackExpanded;
             syncStackState();
-        });
-    }
-
-    if (projectsToggleButton) {
-        projectsToggleButton.addEventListener("click", function () {
-            projectsExpanded = !projectsExpanded;
-            syncProjectsState();
         });
     }
 
